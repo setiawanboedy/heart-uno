@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/pages/splash_screen.dart';
-import '../modules/receive_data/bindings/receive_data_binding.dart';
-import '../modules/receive_data/views/receive_data_view.dart';
+import '../modules/receive_data_graphe/bindings/receive_data_graphe_binding.dart';
+import '../modules/receive_data_graphe/views/receive_data_graphe_view.dart';
 
 part 'app_routes.dart';
 
@@ -23,10 +23,14 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashScreen(),
     ),
+   
     GetPage(
-      name: _Paths.RECEIVE_DATA,
-      page: () => const ReceiveDataView(),
-      binding: ReceiveDataBinding(),
+      name: _Paths.RECEIVE_DATA_GRAPHE,
+      page: () => const ReceiveDataGrapheView(),
+      bindings: [
+        ReceiveDataGrapheBinding(),
+        HomeBinding(),
+      ]
     ),
   ];
 }

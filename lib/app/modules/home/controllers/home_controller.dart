@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:get/get.dart';
 import 'package:heart_usb/app/data/data_model.dart';
+import 'package:heart_usb/app/data/graph_model.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
@@ -15,14 +16,18 @@ class HomeController extends GetxController {
   final RxList<DataModel> _ports = RxList<DataModel>();
   List<DataModel> get model => _ports;
 
-  final RxList<String> _serialData = RxList<String>();
-  List<String> get serialData => _serialData;
+  final RxList<GraphModel> _serialData = RxList();
+  List<GraphModel> get serialData => _serialData;
+
+  int count = 0;
 
   final Rxn<StreamSubscription<String>> _subscription =
       Rxn<StreamSubscription<String>>();
   final Rxn<Transaction<String>> _transaction = Rxn<Transaction<String>>();
 
   final Rxn<UsbDevice> _device = Rxn<UsbDevice>();
+
+  Future<void> get getPort => _getPorts();
 
   Future<bool> connectTo(UsbDevice? device) async {
     _serialData.clear();
@@ -67,13 +72,13 @@ class HomeController extends GetxController {
       _port.value?.inputStream as Stream<Uint8List>,
       Uint8List.fromList([13, 10]),
     ).stream.listen((String line) {
-      _serialData.add(line);
-      if (_serialData.length > 10) {
+      _serialData.add(GraphModel(y: int.parse(line), x: count++));
+      update();
+      if (_serialData.length > 100) {
         _serialData.removeAt(0);
       }
-      update();
     }) as Transaction<String>;
-
+    update();
     return true;
   }
 
@@ -90,7 +95,6 @@ class HomeController extends GetxController {
           .then((value) => _getPorts());
       update();
     }
-    
   }
 
   @override
@@ -102,7 +106,6 @@ class HomeController extends GetxController {
     _getPorts();
     super.onInit();
   }
-
 
   @override
   void onClose() {

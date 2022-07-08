@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:oktoast/oktoast.dart';
 class Parent extends StatefulWidget {
   final Widget? child;
   final AppBar? appBar;
@@ -35,17 +37,24 @@ class _ParentState extends State<Parent> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        key: widget.scaffoldKey,
-        backgroundColor: widget.backgroundColor,
-        resizeToAvoidBottomInset: widget.avoidBottomInset,
-        extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
-        appBar: widget.appBar,
-        body: widget.child,
-        drawer: widget.drawer,
-        endDrawer: widget.endDrawer,
-        floatingActionButton: widget.floatingButton,
-        bottomNavigationBar: widget.bottomNavigation,
+      child: OKToast(
+        child: ScreenUtilInit(
+           designSize: const Size(375, 667),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (_,__) => Scaffold(
+            key: widget.scaffoldKey,
+            backgroundColor: widget.backgroundColor,
+            resizeToAvoidBottomInset: widget.avoidBottomInset,
+            extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
+            appBar: widget.appBar,
+            body: widget.child,
+            drawer: widget.drawer,
+            endDrawer: widget.endDrawer,
+            floatingActionButton: widget.floatingButton,
+            bottomNavigationBar: widget.bottomNavigation,
+          ),
+        ),
       ),
     );
   }
