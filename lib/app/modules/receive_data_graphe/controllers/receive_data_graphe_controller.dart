@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/graph_model.dart';
-import 'package:heart_usb/app/modules/home/controllers/home_controller.dart';
+import '../../../data/graph_model.dart';
+import '../../home/controllers/home_controller.dart';
 import 'package:oktoast/oktoast.dart';
 
 class ReceiveDataGrapheController extends GetxController {

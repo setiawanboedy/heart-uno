@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/modules/pages/parent.dart';
-import 'package:heart_usb/app/modules/resources/palette.dart';
-import 'package:heart_usb/app/routes/app_pages.dart';
+import 'parent.dart';
+import '../resources/palette.dart';
+import '../../routes/app_pages.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
