@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.heart_usb">
+    package="com.unram.heart_usb">
    <application
-        android:label="heart_usb"
+        android:label="Heart Uno"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

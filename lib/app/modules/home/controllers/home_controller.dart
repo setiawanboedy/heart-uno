@@ -1,25 +1,24 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:heart_usb/app/data/data_model.dart';
 import 'package:heart_usb/app/data/graph_model.dart';
+import 'package:heart_usb/app/modules/utils/constants.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
 class HomeController extends GetxController {
   final Rxn<UsbPort> _port = Rxn<UsbPort>();
-  final _status = "Idle".obs;
-
-  String get status => _status.value;
+  final RxString _status = Strings.idle.obs;
 
   final RxList<DataModel> _ports = RxList<DataModel>();
-  List<DataModel> get model => _ports;
 
   final RxList<GraphModel> _serialData = RxList();
-  List<GraphModel> get serialData => _serialData;
 
-  int count = 0;
+  final RxList<int> _beats = RxList.empty(growable: true);
 
   final Rxn<StreamSubscription<String>> _subscription =
       Rxn<StreamSubscription<String>>();
@@ -27,8 +26,19 @@ class HomeController extends GetxController {
 
   final Rxn<UsbDevice> _device = Rxn<UsbDevice>();
 
-  Future<void> get getPort => _getPorts();
+  /// Count time for data
+  int count = 0;
 
+  /// Status of device
+  String get status => _status.value;
+
+  /// Data input from device
+  List<GraphModel> get serialData => _serialData;
+
+  /// Data calculate fro BPM
+  List<int> get beats => _beats;
+
+  /// Connect device with app
   Future<bool> connectTo(UsbDevice? device) async {
     _serialData.clear();
 
@@ -49,32 +59,33 @@ class HomeController extends GetxController {
 
     if (device == null) {
       _device.value = null;
-      _status.value = "Disconnected";
+      _status.value = Strings.disconnected;
     }
 
     _port.value = await device?.create();
     if (_port.value == null) {
-      _status.value = "Disconnected";
+      _status.value = Strings.disconnected;
       return false;
     }
 
     if (await (_port.value?.open()) == true) {
       _device.value = device;
-      _status.value = "Connected";
+      _status.value = Strings.connected;
     }
 
     await _port.value?.setDTR(true);
     await _port.value?.setRTS(true);
-    await _port.value?.setPortParameters(
-        115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
+    await _port.value?.setPortParameters(Constants.port, UsbPort.DATABITS_8,
+        UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
     _transaction.value = Transaction.stringTerminated(
       _port.value?.inputStream as Stream<Uint8List>,
       Uint8List.fromList([13, 10]),
     ).stream.listen((String line) {
       _serialData.add(GraphModel(y: int.parse(line), x: count++));
+      calcualteBPM(int.parse(line));
       update();
-      if (_serialData.length > 100) {
+      if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);
       }
     }) as Transaction<String>;
@@ -82,6 +93,7 @@ class HomeController extends GetxController {
     return true;
   }
 
+  /// Get device information
   Future<void> _getPorts() async {
     _ports([]);
     List<UsbDevice> devices = await UsbSerial.listDevices();
@@ -97,6 +109,13 @@ class HomeController extends GetxController {
     }
   }
 
+  /// add peak data
+  void calcualteBPM(int data) {
+    if (data > Constants.threshold) {
+      _beats.add(data);
+    }
+  }
+
   @override
   void onInit() {
     UsbSerial.usbEventStream?.listen((UsbEvent event) {
@@ -104,12 +123,23 @@ class HomeController extends GetxController {
     });
 
     _getPorts();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.onInit();
   }
 
   @override
   void onClose() {
     connectTo(null);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.onClose();
   }
 }

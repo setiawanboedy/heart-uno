@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:heart_usb/app/modules/pages/parent.dart';
 import 'package:heart_usb/app/modules/resources/dimens.dart';
+import 'package:heart_usb/app/modules/resources/palette.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 import 'package:heart_usb/app/modules/widgets/spacer_v.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:ripple_animation/ripple_animation.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
@@ -14,47 +19,99 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Parent(
       appBar: AppBar(
-        title: const Text('Analisis Detak Jantung'),
-        centerTitle: true,
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Spacer(),
-            Text(
-              "Koneksikan Alat EKG",
-              style: TextStyle(fontSize: Dimens.space24),
-            ),
-            const SpacerV(),
-            Obx(
-              () => Expanded(
-                flex: 4,
-                child: SizedBox(
-                  width: Get.size.width * 0.4,
-                  height: Get.size.width * 0.4,
-                  child: controller.status == "Connected"
-                      ? Image.asset(
-                          "assets/icons/connected.png",
-                          scale: 0.5,
-                        )
-                      : Image.asset(
-                          "assets/icons/disconnected.png",
-                          scale: 0.5,
-                        ),
-                ),
-              ),
-            ),
-            const SpacerV(),
-            ElevatedButton(
-              onPressed: () => Get.toNamed(Routes.RECEIVE_DATA_GRAPHE),
-              child: Container(
-                  padding: EdgeInsets.all(Dimens.button),
-                  child: const Text("Lihat Grafik")),
-            ),
-            const Spacer(),
-          ],
+        elevation: 0,
+        backgroundColor: Colors.white38,
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Palette.statusBarColor,
         ),
+      ),
+      child: Obx(
+        () {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (controller.status == Strings.connected)
+                  RippleAnimation(
+                    repeat: true,
+                    color: Colors.green,
+                    minRadius: 100,
+                    ripplesCount: 2,
+                    child: SizedBox(
+                      width: Get.size.width * 0.4,
+                      height: Get.size.width * 0.4,
+                      child: Image.asset(
+                        "assets/icons/connected.png",
+                        scale: 0.5,
+                      ),
+                    ),
+                  )
+                else
+                  RippleAnimation(
+                    repeat: true,
+                    color: Colors.red,
+                    minRadius: 100,
+                    ripplesCount: 2,
+                    child: SizedBox(
+                      width: Get.size.width * 0.4,
+                      height: Get.size.width * 0.4,
+                      child: Image.asset(
+                        "assets/icons/disconnected.png",
+                        scale: 1,
+                      ),
+                    ),
+                  ),
+                SpacerV(value: Dimens.h1),
+                if (controller.status == Strings.connected)
+                  Column(
+                    children: [
+                      Text(
+                        "Connected",
+                        style: TextStyle(
+                            fontSize: Dimens.h5, color: Palette.bgColor),
+                      ),
+                      SpacerV(
+                        value: Dimens.h4,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.RECEIVE_DATA_GRAPHE);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(Dimens.button),
+                          child: const Text("Lihat grafik"),
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      Text(
+                        "Disconnected",
+                        style: TextStyle(
+                          fontSize: Dimens.h5,
+                          color: Palette.bgColor,
+                        ),
+                      ),
+                      SpacerV(
+                        value: Dimens.h4,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.RECEIVE_DATA_GRAPHE);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(Dimens.button),
+                          child: const Text("Lihat grafik"),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
