@@ -3,10 +3,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/data_model.dart';
-import 'package:heart_usb/app/data/graph_model.dart';
-import 'package:heart_usb/app/modules/utils/constants.dart';
-import 'package:heart_usb/app/modules/utils/strings.dart';
+import '../../../data/data_model.dart';
+import '../../../data/graph_model.dart';
+import '../../utils/constants.dart';
+import '../../utils/strings.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
