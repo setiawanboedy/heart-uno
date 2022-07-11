@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../widgets/spacer_v.dart';
+import 'package:heart_usb/app/modules/widgets/spacer_v.dart';
 
 import '../../../resources/dimens.dart';
 import '../../../resources/palette.dart';

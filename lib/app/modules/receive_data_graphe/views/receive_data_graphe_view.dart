@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import '../../../data/graph_model.dart';
-import '../../utils/constants.dart';
-import '../../../routes/app_pages.dart';
+import 'package:heart_usb/app/data/graph_model.dart';
+import 'package:heart_usb/app/modules/utils/constants.dart';
+import 'package:heart_usb/app/routes/app_pages.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../resources/palette.dart';
