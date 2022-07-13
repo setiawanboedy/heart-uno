@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import '../../modules/utils/common.dart';
 
 import 'dio_interceptor.dart';
 
 class DioClient {
-  String baseUrl = "https://momenkuy.herokuapp.com";
+  String baseUrl = "https://heart-uno.herokuapp.com/";
 
-  String? _auth;
   late Dio _dio;
 
   Dio _createDio() => Dio(
@@ -16,7 +16,6 @@ class DioClient {
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              if (_auth != null) ...{'Authorization': "Bearer $_auth"}
             },
             receiveTimeout: 60000,
             connectTimeout: 60000,
@@ -44,15 +43,23 @@ class DioClient {
 
   Future<Response> postRequest(
     String url, {
-    File? file,
+    required File file,
   }) async {
     try {
-      var len = await file?.length();
+      String fileName = file.path.split('/').last;
+      log.d("message: ${file.path}");
+      FormData formData = FormData.fromMap(
+        {
+          "file": await MultipartFile.fromFile(file.path, filename: fileName),
+        },
+        ListFormat.multiCompatible,
+      );
       final response = await dio.post(
         url,
-        data: file?.openRead(),
+        data: formData,
         options: Options(
-          headers: {Headers.contentLengthHeader: len},
+          method: 'POST',
+          responseType: ResponseType.plain,
         ),
       );
       return response;

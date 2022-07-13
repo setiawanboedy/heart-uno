@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:heart_usb/app/modules/pages/parent.dart';
-import 'package:heart_usb/app/modules/resources/dimens.dart';
-import 'package:heart_usb/app/modules/resources/palette.dart';
-import 'package:heart_usb/app/modules/widgets/spacer_v.dart';
+import '../../../data/domain/entities/heart.dart';
+import '../../pages/parent.dart';
+import '../../resources/dimens.dart';
+import '../../resources/palette.dart';
+import '../../widgets/spacer_v.dart';
 
 import '../controllers/analysis_controller.dart';
 import 'widgets/card_analysis.dart';
 import 'widgets/card_graph.dart';
 
 class AnalysisView extends GetView<AnalysisController> {
-  final String path = Get.arguments as String;
+  final Heart heart = Get.arguments as Heart;
   AnalysisView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class AnalysisView extends GetView<AnalysisController> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Palette.bgColor,
-        title: const Text("Analisis Sinyal Jantung"),
+        title: Text("Analisis Sinyal Jantung | ${heart.data?.bpm}"),
       ),
       child: SingleChildScrollView(
         child: Column(

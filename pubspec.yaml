@@ -8,11 +8,16 @@ environment:
 dependencies:
   csv: ^5.0.1
   cupertino_icons: ^1.0.2
+  dartz: ^0.10.1
+  data_connection_checker: ^0.3.4
   dio: ^4.0.6
+  equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.5.3+2
   get: 4.6.5
+  http: ^0.13.4
+  http_parser: ^4.0.1
   logger: ^1.1.0
   oktoast: ^3.2.0
   path_provider: ^2.0.11

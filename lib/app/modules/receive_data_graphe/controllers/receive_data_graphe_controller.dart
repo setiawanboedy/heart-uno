@@ -4,14 +4,19 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/routes/app_pages.dart';
+import '../../../data/domain/entities/heart.dart';
+import '../../utils/dummy.dart';
+import '../../../routes/app_pages.dart';
 import 'package:path_provider/path_provider.dart';
+import '../../../../core/failure/failure.dart';
+import '../../../data/domain/usecase/post_csv.dart';
 import '../../../data/graph_model.dart';
 import '../../home/controllers/home_controller.dart';
 
-
-class ReceiveDataGrapheController extends GetxController {
+class ReceiveDataGrapheController extends GetxController
+    with StateMixin<Heart> {
   final HomeController _homeC = Get.find<HomeController>();
+  final PostCsv postCsv = Get.put(PostCsv());
 
   RxList<GraphModel> serialData = RxList();
   RxList<int> beats = RxList();
@@ -20,11 +25,20 @@ class ReceiveDataGrapheController extends GetxController {
 
   RxInt bpm = 0.obs;
 
-  /// Smoth the raw using Exponential averaging
-  /// realtime data using formula
-  /// ```
-  /// $y_n = alpha * x_n + (1 - alpha) * y_{n-1}$
-  /// ```
+  Future<void> postUploadCsv(HeartParams params) async {
+    change(null, status: RxStatus.empty());
+    final data = await postCsv.call(params);
+    data.fold((l) {
+      if (l is ServerFailure) {
+        change(null, status: RxStatus.error());
+      }
+    }, (r) {
+      change(
+        r,
+        status: RxStatus.success(),
+      );
+    });
+  }
 
   void getBPM() {
     bpm.value = beats.length * 10;
@@ -33,19 +47,21 @@ class ReceiveDataGrapheController extends GetxController {
   }
 
   Future<void> generateCsv() async {
-    // List<int> list = [6, 6, 7, 7, 7, 7, 7, 7, 8, 8,10000];
     List<List<dynamic>> data = [
-      ["heart"],
+      ["hart"],
     ];
-    for (var lis in serialData) {
-      data.add([lis.y]);
+    for (var lis in Dummy.dataList) {
+      data.add([lis]);
     }
     String csvData = const ListToCsvConverter().convert(data);
-    final String directory = (await getApplicationSupportDirectory()).path;
+    final String directory = (await getTemporaryDirectory()).path;
     final path = "$directory/data.csv";
     final File file = File(path);
+
     await file.writeAsString(csvData);
-    Get.offNamed(Routes.ANALYSIS, arguments: path);
+    Future.delayed(const Duration(seconds: 2), () {
+      postUploadCsv(HeartParams(file));
+    });
   }
 
   @override

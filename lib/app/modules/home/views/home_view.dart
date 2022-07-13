@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:get/get.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:ripple_animation/ripple_animation.dart';
+
+import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
 import '../../resources/dimens.dart';
 import '../../resources/palette.dart';
 import '../../utils/strings.dart';
 import '../../widgets/spacer_v.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:ripple_animation/ripple_animation.dart';
-
-import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {

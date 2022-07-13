@@ -7,11 +7,11 @@ import '../../../resources/palette.dart';
 class BottomGraph extends StatelessWidget {
   final int? bpm;
   final VoidCallback? func;
+  final Widget? textButton;
   const BottomGraph({
     Key? key,
     this.bpm,
-    this.func,
-
+    this.func, this.textButton,
   }) : super(key: key);
 
   @override
@@ -96,7 +96,7 @@ class BottomGraph extends StatelessWidget {
                     onPressed: func,
                     child: Container(
                       padding: EdgeInsets.all(Dimens.button),
-                      child: const Text("Analisis Sinyal"),
+                      child: textButton,
                     ),
                   ),
                 ],

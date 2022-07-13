@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import '../../../data/graph_model.dart';
-import '../../utils/constants.dart';
-import '../../../routes/app_pages.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../data/graph_model.dart';
+import '../../../routes/app_pages.dart';
 import '../../resources/palette.dart';
+import '../../utils/constants.dart';
 import '../controllers/receive_data_graphe_controller.dart';
 import 'widgets/bottom_graph.dart';
 
@@ -81,8 +80,8 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
               GetBuilder<ReceiveDataGrapheController>(
                 init: ReceiveDataGrapheController(),
                 initState: (_) {
-                  controller.timer = Timer.periodic(const Duration(seconds: Constants.timer),
-                      (timer) {
+                  controller.timer = Timer.periodic(
+                      const Duration(seconds: Constants.timer), (timer) {
                     controller.getBPM();
                   });
                 },
@@ -90,6 +89,13 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                   return BottomGraph(
                     bpm: ctr.bpm.value,
                     func: () => controller.generateCsv(),
+                    textButton: controller.obx(
+                      (state) {
+                       return const Text("Analisis Sinyal");
+                      },
+                      onLoading: const CircularProgressIndicator(),
+                      onEmpty: const Text("Analisis Sinyal"),
+                    ),
                   );
                 },
               )
