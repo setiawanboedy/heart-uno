@@ -81,12 +81,16 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
               GetBuilder<ReceiveDataGrapheController>(
                 init: ReceiveDataGrapheController(),
                 initState: (_) {
-                  Timer.periodic(const Duration(seconds: Constants.timer), (timer) {
+                  controller.timer = Timer.periodic(const Duration(seconds: Constants.timer),
+                      (timer) {
                     controller.getBPM();
                   });
                 },
                 builder: (ctr) {
-                  return BottomGraph(bpm: ctr.bpm.value);
+                  return BottomGraph(
+                    bpm: ctr.bpm.value,
+                    func: () => controller.generateCsv(),
+                  );
                 },
               )
           ],

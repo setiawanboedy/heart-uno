@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/analysis/bindings/analysis_binding.dart';
+import '../modules/analysis/views/analysis_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/pages/splash_screen.dart';
@@ -24,14 +26,17 @@ class AppPages {
       name: _Paths.SPLASH,
       page: () => const SplashScreen(),
     ),
-   
     GetPage(
-      name: _Paths.RECEIVE_DATA_GRAPHE,
-      page: () => const ReceiveDataGrapheView(),
-      bindings: [
-        ReceiveDataGrapheBinding(),
-        HomeBinding(),
-      ]
+        name: _Paths.RECEIVE_DATA_GRAPHE,
+        page: () => const ReceiveDataGrapheView(),
+        bindings: [
+          ReceiveDataGrapheBinding(),
+          HomeBinding(),
+        ]),
+    GetPage(
+      name: _Paths.ANALYSIS,
+      page: () => AnalysisView(),
+      binding: AnalysisBinding(),
     ),
   ];
 }

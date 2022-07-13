@@ -103,8 +103,8 @@ class HomeController extends GetxController {
 
     for (var device in devices) {
       _ports.add(DataModel(device));
-      connectTo(_device.value == device ? null : device)
-          .then((value) => _getPorts());
+      connectTo(_device.value == device ? null : device);
+      // .then((value) => _getPorts());
       update();
     }
   }
@@ -119,10 +119,10 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     UsbSerial.usbEventStream?.listen((UsbEvent event) {
-      _getPorts();
+      // _getPorts();
     });
 
-    _getPorts();
+    // _getPorts();
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
