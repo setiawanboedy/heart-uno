@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:heart_usb/core/usecase/usecase.dart';
+import '../../../core/usecase/usecase.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../api/dio_client.dart';

@@ -61,7 +61,7 @@ class DioClient {
   }) async {
     try {
       var multipart = await MultipartFile.fromFile(file.path);
-      MapEntry<String, MultipartFile> multi = MapEntry('file', multipart);
+      MapEntry<String, MultipartFile> multi = MapEntry('csv', multipart);
 
       FormData formData = FormData();
       formData.files.add(multi);

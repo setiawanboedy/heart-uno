@@ -89,7 +89,10 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                   return BottomGraph(
                     bpm: ctr.bpm.value,
                     func: () {
-                      Get.offAllNamed(Routes.ANALYSIS,);
+                      controller.generateCsv();
+                          Get.toNamed(
+                          Routes.ANALYSIS,
+                        );
                     },
                     textButton: const Text("Analisis Sinyal"),
                   );

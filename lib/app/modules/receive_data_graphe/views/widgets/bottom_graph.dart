@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../widgets/spacer_v.dart';
 
 import '../../../resources/dimens.dart';
 import '../../../resources/palette.dart';
+import '../../../widgets/spacer_v.dart';
 
 class BottomGraph extends StatelessWidget {
   final int? bpm;
@@ -33,20 +33,17 @@ class BottomGraph extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Expanded(
-                    child: Text(
-                      "$bpm BPM",
-                      style:
-                          TextStyle(fontSize: Dimens.h6, color: Colors.white),
-                    ),
+                  Text(
+                    "$bpm BPM",
+                    style:
+                        TextStyle(fontSize: Dimens.h6, color: Colors.white),
                   ),
-                  SpacerV(
-                    value: Dimens.h6,
+                  const SpacerV(
                   ),
                   ElevatedButton(
                     onPressed: func,
                     child: SizedBox(
-                      width: Dimens.space46 * 2,
+                      width: Dimens.space50 * 2,
                       height: Dimens.buttonH,
                       child: Center(child: textButton),
                     ),

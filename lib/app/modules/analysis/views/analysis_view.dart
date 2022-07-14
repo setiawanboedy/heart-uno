@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/domain/usecase/post_csv.dart';
-import 'package:heart_usb/app/routes/app_pages.dart';
+import '../../../data/domain/usecase/post_csv.dart';
+import '../../../routes/app_pages.dart';
 import '../../../data/domain/entities/heart.dart';
 import '../../pages/parent.dart';
 import '../../resources/dimens.dart';
@@ -17,7 +17,7 @@ import 'widgets/card_analysis.dart';
 import 'widgets/card_graph.dart';
 
 class AnalysisView extends GetView<AnalysisController> {
-  final Heart heart = Get.arguments as Heart;
+  // final Heart heart = Get.arguments as Heart;
   AnalysisView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -57,10 +57,13 @@ class AnalysisView extends GetView<AnalysisController> {
               image: controller.obx(
                 (state) {
                   return state != null
-                      ? Image.memory(base64Decode(state), fit: BoxFit.cover,)
+                      ? Image.memory(
+                          base64Decode(state),
+                          fit: BoxFit.cover,
+                        )
                       : Container();
                 },
-                onLoading: const CircularProgressIndicator(),
+                onLoading: const Center(child: CircularProgressIndicator()),
                 onError: (error) => Text(error ?? "no data"),
               ),
             ),
@@ -83,20 +86,39 @@ class AnalysisView extends GetView<AnalysisController> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
                 width: Get.size.width,
-                height: Get.size.height * 0.17,
-                child: CardAnalysis(
-                  heart: heart,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SizedBox(
-                width: Get.size.width,
-                height: Get.size.height * 0.17,
-                child: CardAnalysis(
-                  heart: heart,
-                ),
+                height: Get.size.height * 0.35,
+                child: Obx(() {
+                  if (controller.receive.heart.value != null) {
+                    return GridView.count(
+                      shrinkWrap: false,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      children: [
+                        CardAnalysis(
+                          value: controller.receive.heart.value?.ibi,
+                          title: "IBI",
+                        ),
+                        CardAnalysis(
+                          value: controller.receive.heart.value?.rmssd,
+                          title: "RMSSD",
+                        ),
+                        CardAnalysis(
+                          value: controller.receive.heart.value?.sdnn,
+                          title: "SDNN",
+                        ),
+                        CardAnalysis(
+                          value: controller.receive.heart.value?.sdsd,
+                          title: "SDSD",
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                }),
               ),
             ),
             SpacerV(
@@ -123,9 +145,32 @@ class AnalysisView extends GetView<AnalysisController> {
               child: SizedBox(
                 width: Get.size.width,
                 height: Get.size.height * 0.2,
-                child: const CardAnalysis(
-                  value: 2,
-                ),
+                child: Obx(() {
+                  if (controller.receive.heart.value != null) {
+                    return GridView.count(
+                      shrinkWrap: false,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      children: [
+                        CardAnalysis(
+                          value: controller.receive.heart.value?.hf,
+                          title: "HF",
+                        ),
+                        CardAnalysis(
+                          value: controller.receive.heart.value?.lf,
+                          title: "LF",
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }),
               ),
             )
           ],

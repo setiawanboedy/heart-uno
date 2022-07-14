@@ -13,7 +13,8 @@ class CardGraph extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Card(
         child: Container(
-          height: Get.size.height * 0.3,
+          height: Get.size.height * 0.35,
+          width: Get.size.width,
           color: Colors.white,
           child: image,
         ),

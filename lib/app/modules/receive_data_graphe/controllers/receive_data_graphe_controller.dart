@@ -4,14 +4,15 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import '../../../data/domain/entities/heart.dart';
-import '../../utils/dummy.dart';
-import '../../../routes/app_pages.dart';
+import 'package:heart_usb/app/data/datasource/model/heart_analysis_response.dart';
 import 'package:path_provider/path_provider.dart';
+
 import '../../../../core/failure/failure.dart';
+import '../../../data/domain/entities/heart.dart';
 import '../../../data/domain/usecase/post_csv.dart';
 import '../../../data/graph_model.dart';
 import '../../home/controllers/home_controller.dart';
+import '../../utils/dummy.dart';
 
 class ReceiveDataGrapheController extends GetxController
     with StateMixin<Heart> {
@@ -20,30 +21,30 @@ class ReceiveDataGrapheController extends GetxController
 
   RxList<GraphModel> serialData = RxList();
   RxList<int> beats = RxList();
+  var heart = Rxn<Data>();
 
   Timer? timer;
 
   RxInt bpm = 0.obs;
 
+  void getBPM() {
+    bpm.value = beats.length * 10;
+    beats.clear();
+    update();
+  }
+
   Future<void> postUploadCsv(HeartParams params) async {
     change(null, status: RxStatus.empty());
     final data = await postCsv.call(params);
+
     data.fold((l) {
       if (l is ServerFailure) {
         change(null, status: RxStatus.error());
       }
     }, (r) {
-      change(
-        r,
-        status: RxStatus.success(),
-      );
+      heart(r.data);
+      change(r, status: RxStatus.success());
     });
-  }
-
-  void getBPM() {
-    bpm.value = beats.length * 10;
-    beats.clear();
-    update();
   }
 
   Future<void> generateCsv() async {

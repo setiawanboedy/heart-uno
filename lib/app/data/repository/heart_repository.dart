@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/core/usecase/usecase.dart';
+import '../../../core/usecase/usecase.dart';
 import '../datasource/heart_datasource.dart';
 import '../domain/entities/heart.dart';
 import '../../../core/error/exceptions.dart';
