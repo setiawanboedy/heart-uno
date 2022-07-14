@@ -17,21 +17,6 @@ class DioInterceptor extends Interceptor {
         debugPrint('$key: $value');
       });
     } catch (_) {}
-
-    // try {
-    //   const JsonEncoder encoder = JsonEncoder.withIndent(' ');
-    //   final String prettyJson = encoder.convert(options.data);
-
-    //   log.d(
-    //     "REQUEST ► ︎ ${options.method.toUpperCase()}\n\n"
-    //     "Headers:\n"
-    //     "$headerMessage\n"
-    //     "❖ QueryParameters : \n"
-    //     "Body: $prettyJson",
-    //   );
-    // } catch (e) {
-    //   log.e("Failed to extract json request $e");
-    // }
     super.onRequest(options, handler);
   }
 

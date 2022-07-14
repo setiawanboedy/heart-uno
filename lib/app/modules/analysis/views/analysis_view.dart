@@ -1,24 +1,19 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import '../../../data/domain/usecase/post_csv.dart';
+
 import '../../../routes/app_pages.dart';
-import '../../../data/domain/entities/heart.dart';
 import '../../pages/parent.dart';
 import '../../resources/dimens.dart';
 import '../../resources/palette.dart';
 import '../../widgets/spacer_v.dart';
-
 import '../controllers/analysis_controller.dart';
 import 'widgets/card_analysis.dart';
 import 'widgets/card_graph.dart';
 
 class AnalysisView extends GetView<AnalysisController> {
-  // final Heart heart = Get.arguments as Heart;
-  AnalysisView({Key? key}) : super(key: key);
+  const AnalysisView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Parent(
@@ -29,7 +24,7 @@ class AnalysisView extends GetView<AnalysisController> {
         title: const Text("Analysis Sinyal Jantung"),
         leading: IconButton(
             onPressed: () {
-              Get.toNamed(Routes.RECEIVE_DATA_GRAPHE);
+              Get.offAllNamed(Routes.HOME);
             },
             icon: const Icon(Icons.arrow_back)),
       ),
@@ -54,17 +49,13 @@ class AnalysisView extends GetView<AnalysisController> {
             ),
             const SpacerV(),
             CardGraph(
-              image: controller.obx(
-                (state) {
-                  return state != null
-                      ? Image.memory(
-                          base64Decode(state),
-                          fit: BoxFit.cover,
-                        )
-                      : Container();
-                },
-                onLoading: const Center(child: CircularProgressIndicator()),
-                onError: (error) => Text(error ?? "no data"),
+              image: Obx(
+                () => controller.oriImage.value != null
+                    ? Image.memory(
+                        base64Decode(controller.oriImage.value!),
+                        fit: BoxFit.cover,
+                      )
+                    : const Center(child: CircularProgressIndicator()),
               ),
             ),
             SpacerV(
@@ -136,7 +127,16 @@ class AnalysisView extends GetView<AnalysisController> {
               ),
             ),
             const SpacerV(),
-            const CardGraph(),
+            CardGraph(
+              image: Obx(
+                () => controller.spectrumImage.value != null
+                    ? Image.memory(
+                        base64Decode(controller.spectrumImage.value!),
+                        fit: BoxFit.cover,
+                      )
+                    : const Center(child:  CircularProgressIndicator()),
+              ),
+            ),
             SpacerV(
               value: Dimens.space16,
             ),

@@ -9,12 +9,3 @@ class Heart extends Equatable {
   @override
   List<Object?> get props => [data];
 }
-
-class Original extends Equatable {
-  final String? oriUrl;
-
-  const Original(this.oriUrl);
-  
-  @override
-  List<Object?> get props => [oriUrl];
-}

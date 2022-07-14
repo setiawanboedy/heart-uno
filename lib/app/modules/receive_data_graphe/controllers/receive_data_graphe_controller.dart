@@ -4,18 +4,16 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/datasource/model/heart_analysis_response.dart';
+import '../../../data/datasource/model/heart_analysis_response.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/failure/failure.dart';
-import '../../../data/domain/entities/heart.dart';
 import '../../../data/domain/usecase/post_csv.dart';
 import '../../../data/graph_model.dart';
 import '../../home/controllers/home_controller.dart';
 import '../../utils/dummy.dart';
 
-class ReceiveDataGrapheController extends GetxController
-    with StateMixin<Heart> {
+class ReceiveDataGrapheController extends GetxController {
   final HomeController _homeC = Get.find<HomeController>();
   final PostCsv postCsv = Get.put(PostCsv());
 
@@ -34,16 +32,12 @@ class ReceiveDataGrapheController extends GetxController
   }
 
   Future<void> postUploadCsv(HeartParams params) async {
-    change(null, status: RxStatus.empty());
     final data = await postCsv.call(params);
 
     data.fold((l) {
-      if (l is ServerFailure) {
-        change(null, status: RxStatus.error());
-      }
+      if (l is ServerFailure) {}
     }, (r) {
       heart(r.data);
-      change(r, status: RxStatus.success());
     });
   }
 

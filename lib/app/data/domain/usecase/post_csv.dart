@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
-import '../../datasource/model/heart_analysis_response.dart';
 import '../entities/heart.dart';
 import '../../repository/heart_repository.dart';
 import '../../../../core/failure/failure.dart';

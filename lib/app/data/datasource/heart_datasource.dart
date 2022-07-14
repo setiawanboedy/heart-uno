@@ -10,6 +10,7 @@ import 'model/heart_analysis_response.dart';
 abstract class HeartDatasource {
   Future<HeartAnalysisResponse> uploadCSV(HeartParams params);
   Future<String> getOriginal(NoParams params);
+  Future<String> getSpectrum(NoParams params);
 }
 
 class HeartDatasourceImpl implements HeartDatasource {
@@ -37,6 +38,21 @@ class HeartDatasourceImpl implements HeartDatasource {
   Future<String> getOriginal(NoParams params) async {
     try {
       final response = await _client.getRequest(ListApi.originalImage);
+      final result = response.data;
+      if (response.statusCode == 200) {
+        return result;
+      } else {
+        throw ServerException(result.toString());
+      }
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    }
+  }
+  
+  @override
+  Future<String> getSpectrum(NoParams params) async {
+    try {
+      final response = await _client.getRequest(ListApi.spectrumImage);
       final result = response.data;
       if (response.statusCode == 200) {
         return result;

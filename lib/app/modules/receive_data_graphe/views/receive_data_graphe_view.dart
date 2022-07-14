@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/modules/resources/dimens.dart';
+import 'package:heart_usb/core/network/network_info.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../data/graph_model.dart';
@@ -25,7 +27,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            Get.offNamed(Routes.HOME);
+            Get.offAllNamed(Routes.HOME);
           },
           icon: const Icon(
             Icons.arrow_back,
@@ -88,11 +90,21 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                 builder: (ctr) {
                   return BottomGraph(
                     bpm: ctr.bpm.value,
-                    func: () {
-                      controller.generateCsv();
-                          Get.toNamed(
-                          Routes.ANALYSIS,
+                    func: () async {
+                      final network = NetworkInfoImpl();
+                      if (await network.isConnected) {
+                        controller.generateCsv();
+                        Get.offAllNamed(Routes.ANALYSIS);
+                      } else {
+                        Get.defaultDialog(
+                          title: "Tidak ada internet",
+                          middleText:
+                              "Pastikan koneksi ada untuk melakukan analisis",
+                          textConfirm: "OK",
+                          confirmTextColor: Colors.white,
+                          onConfirm: () => Get.back(),
                         );
+                      }
                     },
                     textButton: const Text("Analisis Sinyal"),
                   );

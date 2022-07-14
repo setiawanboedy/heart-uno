@@ -35,7 +35,7 @@ class AppPages {
         ]),
     GetPage(
       name: _Paths.ANALYSIS,
-      page: () => AnalysisView(),
+      page: () => const AnalysisView(),
       binding: AnalysisBinding(),
     ),
   ];

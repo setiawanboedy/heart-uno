@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:ripple_animation/ripple_animation.dart';
@@ -19,10 +18,20 @@ class HomeView extends GetView<HomeController> {
     return Parent(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white38,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: Palette.statusBarColor,
-        ),
+        backgroundColor: Palette.bgColor,
+        // systemOverlayStyle: const SystemUiOverlayStyle(
+        //   statusBarColor: Palette.statusBarColor,
+        // ),
+        actions: [
+          InkWell(
+            borderRadius: BorderRadius.circular(Dimens.cornerRadius),
+            onTap: () {},
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: Dimens.button),
+              child: const Icon(Icons.settings),
+            ),
+          ),
+        ],
       ),
       child: Obx(
         () {

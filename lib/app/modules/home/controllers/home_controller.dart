@@ -130,6 +130,20 @@ class HomeController extends GetxController {
     ]);
     super.onInit();
   }
+  // @override
+  // void onReady() {
+  //   // UsbSerial.usbEventStream?.listen((UsbEvent event) {
+  //   //   _getPorts();
+  //   // });
+
+  //   _getPorts();
+
+  //   SystemChrome.setPreferredOrientations([
+  //     DeviceOrientation.portraitUp,
+  //     DeviceOrientation.portraitDown,
+  //   ]);
+  //   super.onReady();
+  // }
 
   @override
   void onClose() {

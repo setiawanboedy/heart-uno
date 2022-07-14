@@ -21,7 +21,7 @@ class CardAnalysis extends StatelessWidget {
               "$title",
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text("$value")
+            Text("${value?.toStringAsFixed(3)}")
           ],
         ),
       ),
