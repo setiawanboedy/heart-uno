@@ -11,13 +11,13 @@ class BottomGraph extends StatelessWidget {
   const BottomGraph({
     Key? key,
     this.bpm,
-    this.func, this.textButton,
+    this.func,
+    this.textButton,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      flex: 2,
       child: Container(
         decoration: const BoxDecoration(
           color: Palette.bgColor,
@@ -34,69 +34,21 @@ class BottomGraph extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "0.281",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: Dimens.h6),
-                            ),
-                            const Text(
-                              "HF",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "0.281",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: Dimens.h6),
-                            ),
-                            const Text(
-                              "LF",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              "0.281",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: Dimens.h6),
-                            ),
-                            const Text(
-                              "LF/HF",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ],
+                    child: Text(
+                      "$bpm BPM",
+                      style:
+                          TextStyle(fontSize: Dimens.h6, color: Colors.white),
                     ),
-                  ),
-                  Text(
-                    "$bpm bpm",
-                    style: TextStyle(fontSize: Dimens.h6, color: Colors.white),
                   ),
                   SpacerV(
                     value: Dimens.h6,
                   ),
                   ElevatedButton(
                     onPressed: func,
-                    child: Container(
-                      padding: EdgeInsets.all(Dimens.button),
-                      child: textButton,
+                    child: SizedBox(
+                      width: Dimens.space46 * 2,
+                      height: Dimens.buttonH,
+                      child: Center(child: textButton),
                     ),
                   ),
                 ],

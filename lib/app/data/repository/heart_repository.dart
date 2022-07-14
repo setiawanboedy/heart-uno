@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/core/usecase/usecase.dart';
 import '../datasource/heart_datasource.dart';
 import '../domain/entities/heart.dart';
 import '../../../core/error/exceptions.dart';
@@ -9,6 +10,7 @@ import '../domain/usecase/post_csv.dart';
 
 abstract class HeartRepository {
   Future<Either<Failure, Heart>> uploadCsv(HeartParams params);
+  Future<Either<Failure, String>> getOriginal(NoParams params);
 }
 
 class HeartRepositoryImpl implements HeartRepository {
@@ -19,6 +21,16 @@ class HeartRepositoryImpl implements HeartRepository {
     try {
       final response = await heartDatasource.uploadCSV(params);
       return Right(response.toEntity());
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, String>> getOriginal(NoParams params) async{
+    try {
+      final response = await heartDatasource.getOriginal(params);
+      return Right(response);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     }

@@ -1,6 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:heart_usb/app/data/domain/usecase/post_csv.dart';
+import 'package:heart_usb/app/routes/app_pages.dart';
 import '../../../data/domain/entities/heart.dart';
 import '../../pages/parent.dart';
 import '../../resources/dimens.dart';
@@ -19,8 +24,14 @@ class AnalysisView extends GetView<AnalysisController> {
     return Parent(
       appBar: AppBar(
         elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Palette.bgColor,
-        title: Text("Analisis Sinyal Jantung | ${heart.data?.bpm}"),
+        title: const Text("Analysis Sinyal Jantung"),
+        leading: IconButton(
+            onPressed: () {
+              Get.toNamed(Routes.RECEIVE_DATA_GRAPHE);
+            },
+            icon: const Icon(Icons.arrow_back)),
       ),
       child: SingleChildScrollView(
         child: Column(
@@ -42,7 +53,17 @@ class AnalysisView extends GetView<AnalysisController> {
               ),
             ),
             const SpacerV(),
-            const CardGraph(),
+            CardGraph(
+              image: controller.obx(
+                (state) {
+                  return state != null
+                      ? Image.memory(base64Decode(state), fit: BoxFit.cover,)
+                      : Container();
+                },
+                onLoading: const CircularProgressIndicator(),
+                onError: (error) => Text(error ?? "no data"),
+              ),
+            ),
             SpacerV(
               value: Dimens.space16,
             ),
@@ -62,8 +83,20 @@ class AnalysisView extends GetView<AnalysisController> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
                 width: Get.size.width,
-                height: Get.size.height * 0.35,
-                child: const CardAnalysis(),
+                height: Get.size.height * 0.17,
+                child: CardAnalysis(
+                  heart: heart,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: SizedBox(
+                width: Get.size.width,
+                height: Get.size.height * 0.17,
+                child: CardAnalysis(
+                  heart: heart,
+                ),
               ),
             ),
             SpacerV(
@@ -87,21 +120,12 @@ class AnalysisView extends GetView<AnalysisController> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                "Frequency",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: Dimens.body1,
-                  color: Palette.text,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
                 width: Get.size.width,
                 height: Get.size.height * 0.2,
-                child: const CardAnalysis(),
+                child: const CardAnalysis(
+                  value: 2,
+                ),
               ),
             )
           ],

@@ -54,14 +54,12 @@ class ReceiveDataGrapheController extends GetxController
       data.add([lis]);
     }
     String csvData = const ListToCsvConverter().convert(data);
-    final String directory = (await getTemporaryDirectory()).path;
+    final String directory = (await getApplicationSupportDirectory()).path;
     final path = "$directory/data.csv";
     final File file = File(path);
 
     await file.writeAsString(csvData);
-    Future.delayed(const Duration(seconds: 2), () {
-      postUploadCsv(HeartParams(file));
-    });
+    await postUploadCsv(HeartParams(file));
   }
 
   @override

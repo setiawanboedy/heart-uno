@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CardGraph extends StatelessWidget {
+  final Widget? image;
   const CardGraph({
-    Key? key,
+    Key? key, this.image,
   }) : super(key: key);
 
   @override
@@ -14,6 +15,7 @@ class CardGraph extends StatelessWidget {
         child: Container(
           height: Get.size.height * 0.3,
           color: Colors.white,
+          child: image,
         ),
       ),
     );

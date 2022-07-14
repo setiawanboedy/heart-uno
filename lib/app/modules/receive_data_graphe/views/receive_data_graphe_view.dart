@@ -88,14 +88,10 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                 builder: (ctr) {
                   return BottomGraph(
                     bpm: ctr.bpm.value,
-                    func: () => controller.generateCsv(),
-                    textButton: controller.obx(
-                      (state) {
-                       return const Text("Analisis Sinyal");
-                      },
-                      onLoading: const CircularProgressIndicator(),
-                      onEmpty: const Text("Analisis Sinyal"),
-                    ),
+                    func: () {
+                      Get.offAllNamed(Routes.ANALYSIS,);
+                    },
+                    textButton: const Text("Analisis Sinyal"),
                   );
                 },
               )

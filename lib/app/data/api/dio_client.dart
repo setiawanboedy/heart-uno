@@ -1,15 +1,22 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import '../../modules/utils/common.dart';
 
 import 'dio_interceptor.dart';
 
 class DioClient {
-  String baseUrl = "https://heart-uno.herokuapp.com/";
+  String baseUrl = "https://heart-uno.herokuapp.com";
 
   late Dio _dio;
+  bool _isUnitTest = false;
 
+  DioClient({bool isUnitTest = false}) {
+    _isUnitTest = isUnitTest;
+
+    try {} catch (_) {}
+    _dio = _createDio();
+    if (!_isUnitTest) _dio.interceptors.add(DioInterceptor());
+  }
   Dio _createDio() => Dio(
         BaseOptions(
             baseUrl: baseUrl,
@@ -24,8 +31,13 @@ class DioClient {
             }),
       );
   Dio get dio {
+    if (_isUnitTest) {
+      return _dio;
+    } else {
+      try {} catch (_) {}
+    }
     _dio = _createDio();
-    _dio.interceptors.add(DioInterceptor());
+    if (!_isUnitTest) _dio.interceptors.add(DioInterceptor());
     return _dio;
   }
 
@@ -34,7 +46,9 @@ class DioClient {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      final response = await dio.get(url, queryParameters: queryParameters);
+      final response = await dio.get(url, queryParameters: queryParameters, options: Options(
+        contentType: "image/png"
+      ));
       return response;
     } on DioError catch (e) {
       throw Exception(e.message);
@@ -46,22 +60,12 @@ class DioClient {
     required File file,
   }) async {
     try {
-      String fileName = file.path.split('/').last;
-      log.d("message: ${file.path}");
-      FormData formData = FormData.fromMap(
-        {
-          "file": await MultipartFile.fromFile(file.path, filename: fileName),
-        },
-        ListFormat.multiCompatible,
-      );
-      final response = await dio.post(
-        url,
-        data: formData,
-        options: Options(
-          method: 'POST',
-          responseType: ResponseType.plain,
-        ),
-      );
+      var multipart = await MultipartFile.fromFile(file.path);
+      MapEntry<String, MultipartFile> multi = MapEntry('file', multipart);
+
+      FormData formData = FormData();
+      formData.files.add(multi);
+      final response = await dio.post(url, data: formData);
       return response;
     } on DioError catch (e) {
       throw Exception(e.message);
