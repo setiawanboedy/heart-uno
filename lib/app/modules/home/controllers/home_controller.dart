@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/data/datasource/local/storage_manager.dart';
 import '../../../data/data_model.dart';
 import '../../../data/graph_model.dart';
 import '../../utils/constants.dart';
@@ -25,6 +26,10 @@ class HomeController extends GetxController {
   final Rxn<Transaction<String>> _transaction = Rxn<Transaction<String>>();
 
   final Rxn<UsbDevice> _device = Rxn<UsbDevice>();
+
+  final RxString _portUsb = Strings.defaultValue.obs;
+
+  String get portUsb => _portUsb.value;
 
   /// Count time for data
   int count = 0;
@@ -75,7 +80,7 @@ class HomeController extends GetxController {
 
     await _port.value?.setDTR(true);
     await _port.value?.setRTS(true);
-    await _port.value?.setPortParameters(Constants.port, UsbPort.DATABITS_8,
+    await _port.value?.setPortParameters(int.parse(portUsb), UsbPort.DATABITS_8,
         UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
     _transaction.value = Transaction.stringTerminated(
@@ -118,6 +123,8 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+    print(Get.find<StorageManager>().port);
+    _portUsb((Get.find<StorageManager>().port ?? Constants.port).toString());
     UsbSerial.usbEventStream?.listen((UsbEvent event) {
       _getPorts();
     });
@@ -130,20 +137,21 @@ class HomeController extends GetxController {
     ]);
     super.onInit();
   }
-  // @override
-  // void onReady() {
-  //   // UsbSerial.usbEventStream?.listen((UsbEvent event) {
-  //   //   _getPorts();
-  //   // });
 
-  //   _getPorts();
+  @override
+  void onReady() {
+    // UsbSerial.usbEventStream?.listen((UsbEvent event) {
+    //   _getPorts();
+    // });
 
-  //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //   ]);
-  //   super.onReady();
-  // }
+    // _getPorts();
+
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    //   DeviceOrientation.portraitDown,
+    // ]);
+    super.onReady();
+  }
 
   @override
   void onClose() {

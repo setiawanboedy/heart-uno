@@ -11,11 +11,13 @@ dependencies:
   dartz: ^0.10.1
   data_connection_checker: ^0.3.4
   dio: ^4.0.6
+  dropdown_button2: ^1.6.3
   equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.5.3+2
   get: 4.6.5
+  get_storage: ^2.0.3
   logger: ^1.1.0
   oktoast: ^3.2.0
   path_provider: ^2.0.11

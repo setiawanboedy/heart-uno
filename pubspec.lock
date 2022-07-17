@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  dropdown_button2:
+    dependency: "direct main"
+    description:
+      name: dropdown_button2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.3"
   equatable:
     dependency: "direct main"
     description:
@@ -137,6 +144,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.6.5"
+  get_storage:
+    dependency: "direct main"
+    description:
+      name: get_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   http_parser:
     dependency: transitive
     description:

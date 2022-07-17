@@ -14,7 +14,7 @@ import '../../home/controllers/home_controller.dart';
 import '../../utils/dummy.dart';
 
 class ReceiveDataGrapheController extends GetxController {
-  final HomeController _homeC = Get.find<HomeController>();
+  final HomeController _homeC = Get.put(HomeController());
   final PostCsv postCsv = Get.put(PostCsv());
 
   RxList<GraphModel> serialData = RxList();

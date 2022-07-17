@@ -9,6 +9,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const RECEIVE_DATA_GRAPHE = _Paths.RECEIVE_DATA_GRAPHE;
   static const ANALYSIS = _Paths.ANALYSIS;
+  static const SETTING = _Paths.SETTING;
 }
 
 abstract class _Paths {
@@ -17,4 +18,5 @@ abstract class _Paths {
   static const SPLASH = '/splash';
   static const RECEIVE_DATA_GRAPHE = '/receive-data-graphe';
   static const ANALYSIS = '/analysis';
+  static const SETTING = '/setting';
 }

@@ -6,4 +6,6 @@ class Strings {
   static const disconnected = "Disconnected";
   static const idle = "Idle";
   static const csv = "csv";
+
+  static const defaultValue = 'Pilih Port';
 }

@@ -18,6 +18,7 @@ class HomeView extends GetView<HomeController> {
     return Parent(
       appBar: AppBar(
         elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Palette.bgColor,
         // systemOverlayStyle: const SystemUiOverlayStyle(
         //   statusBarColor: Palette.statusBarColor,
@@ -25,7 +26,7 @@ class HomeView extends GetView<HomeController> {
         actions: [
           InkWell(
             borderRadius: BorderRadius.circular(Dimens.cornerRadius),
-            onTap: () {},
+            onTap: () => Get.toNamed(Routes.SETTING),
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: Dimens.button),
               child: const Icon(Icons.settings),

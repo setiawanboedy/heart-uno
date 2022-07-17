@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:heart_usb/di/dependency_injection.dart';
+
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
+  await dependencyInjection();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     GetMaterialApp(
