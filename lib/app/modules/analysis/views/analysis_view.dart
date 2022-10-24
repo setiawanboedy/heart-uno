@@ -79,7 +79,7 @@ class AnalysisView extends GetView<AnalysisController> {
                 width: Get.size.width,
                 height: Get.size.height * 0.35,
                 child: Obx(() {
-                  if (controller.receive.heart.value != null) {
+                  if (controller.receive.heartAnalysisResult.value != null) {
                     return GridView.count(
                       shrinkWrap: false,
                       physics: const NeverScrollableScrollPhysics(),
@@ -89,19 +89,23 @@ class AnalysisView extends GetView<AnalysisController> {
                       mainAxisSpacing: 10,
                       children: [
                         CardAnalysis(
-                          value: controller.receive.heart.value?.ibi,
+                          value:
+                              controller.receive.heartAnalysisResult.value?.ibi,
                           title: "IBI",
                         ),
                         CardAnalysis(
-                          value: controller.receive.heart.value?.rmssd,
+                          value: controller
+                              .receive.heartAnalysisResult.value?.rmssd,
                           title: "RMSSD",
                         ),
                         CardAnalysis(
-                          value: controller.receive.heart.value?.sdnn,
+                          value: controller
+                              .receive.heartAnalysisResult.value?.sdnn,
                           title: "SDNN",
                         ),
                         CardAnalysis(
-                          value: controller.receive.heart.value?.sdsd,
+                          value: controller
+                              .receive.heartAnalysisResult.value?.sdsd,
                           title: "SDSD",
                         ),
                       ],
@@ -134,7 +138,7 @@ class AnalysisView extends GetView<AnalysisController> {
                         base64Decode(controller.spectrumImage.value!),
                         fit: BoxFit.cover,
                       )
-                    : const Center(child:  CircularProgressIndicator()),
+                    : const Center(child: CircularProgressIndicator()),
               ),
             ),
             SpacerV(
@@ -146,7 +150,7 @@ class AnalysisView extends GetView<AnalysisController> {
                 width: Get.size.width,
                 height: Get.size.height * 0.2,
                 child: Obx(() {
-                  if (controller.receive.heart.value != null) {
+                  if (controller.receive.heartAnalysisResult.value != null) {
                     return GridView.count(
                       shrinkWrap: false,
                       physics: const NeverScrollableScrollPhysics(),
@@ -156,11 +160,13 @@ class AnalysisView extends GetView<AnalysisController> {
                       mainAxisSpacing: 10,
                       children: [
                         CardAnalysis(
-                          value: controller.receive.heart.value?.hf,
+                          value:
+                              controller.receive.heartAnalysisResult.value?.hf,
                           title: "HF",
                         ),
                         CardAnalysis(
-                          value: controller.receive.heart.value?.lf,
+                          value:
+                              controller.receive.heartAnalysisResult.value?.lf,
                           title: "LF",
                         ),
                       ],

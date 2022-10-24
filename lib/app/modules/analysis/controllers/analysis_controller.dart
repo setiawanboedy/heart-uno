@@ -1,9 +1,8 @@
 import 'package:get/get.dart';
-import '../../../data/domain/usecase/get_spectrum.dart';
-
 
 import '../../../../core/usecase/usecase.dart';
 import '../../../data/domain/usecase/get_original.dart';
+import '../../../data/domain/usecase/get_spectrum.dart';
 import '../../receive_data_graphe/controllers/receive_data_graphe_controller.dart';
 
 class AnalysisController extends GetxController {
@@ -50,8 +49,4 @@ class AnalysisController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

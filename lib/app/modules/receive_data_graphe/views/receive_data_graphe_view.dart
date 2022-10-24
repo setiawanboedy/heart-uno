@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/modules/resources/dimens.dart';
-import 'package:heart_usb/core/network/network_info.dart';
+import '../../../../core/network/network_info.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../data/graph_model.dart';

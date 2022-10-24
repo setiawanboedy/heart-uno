@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/datasource/local/storage_manager.dart';
+import '../../../data/datasource/local/storage_manager.dart';
 import '../../../data/data_model.dart';
 import '../../../data/graph_model.dart';
 import '../../utils/constants.dart';
@@ -49,33 +48,33 @@ class HomeController extends GetxController {
 
     if (_subscription.value != null) {
       _subscription.value?.cancel();
-      _subscription.value = null;
+      _subscription(null);
     }
 
     if (_transaction.value != null) {
       _transaction.value?.dispose();
-      _transaction.value = null;
+      _transaction(null);
     }
 
     if (_port.value != null) {
       _port.value?.close();
-      _port.value = null;
+      _port(null);
     }
 
     if (device == null) {
-      _device.value = null;
-      _status.value = Strings.disconnected;
+      _device(null);
+      _status(Strings.disconnected);
     }
 
-    _port.value = await device?.create();
+    _port(await device?.create());
     if (_port.value == null) {
-      _status.value = Strings.disconnected;
+      _status(Strings.disconnected);
       return false;
     }
 
     if (await (_port.value?.open()) == true) {
-      _device.value = device;
-      _status.value = Strings.connected;
+      _device(device);
+      _status(Strings.connected);
     }
 
     await _port.value?.setDTR(true);
@@ -83,7 +82,7 @@ class HomeController extends GetxController {
     await _port.value?.setPortParameters(int.parse(portUsb), UsbPort.DATABITS_8,
         UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
-    _transaction.value = Transaction.stringTerminated(
+    _transaction(Transaction.stringTerminated(
       _port.value?.inputStream as Stream<Uint8List>,
       Uint8List.fromList([13, 10]),
     ).stream.listen((String line) {
@@ -93,7 +92,7 @@ class HomeController extends GetxController {
       if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);
       }
-    }) as Transaction<String>;
+    }) as Transaction<String>);
     update();
     return true;
   }
@@ -109,7 +108,7 @@ class HomeController extends GetxController {
     for (var device in devices) {
       _ports.add(DataModel(device));
       connectTo(_device.value == device ? null : device)
-      .then((value) => _getPorts());
+          .then((value) => _getPorts());
       update();
     }
   }
@@ -123,9 +122,9 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    print(Get.find<StorageManager>().port);
     _portUsb((Get.find<StorageManager>().port ?? Constants.port).toString());
     UsbSerial.usbEventStream?.listen((UsbEvent event) {
+
       _getPorts();
     });
 
@@ -138,20 +137,6 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    // UsbSerial.usbEventStream?.listen((UsbEvent event) {
-    //   _getPorts();
-    // });
-
-    // _getPorts();
-
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
-    super.onReady();
-  }
 
   @override
   void onClose() {

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:heart_usb/app/modules/home/controllers/home_controller.dart';
-import 'package:heart_usb/app/modules/utils/strings.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../utils/strings.dart';
 
 class SettingController extends GetxController {
   final HomeController home = Get.find<HomeController>();
@@ -20,13 +20,5 @@ class SettingController extends GetxController {
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

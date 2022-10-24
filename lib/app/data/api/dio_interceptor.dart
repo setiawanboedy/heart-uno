@@ -8,9 +8,7 @@ import '../../modules/utils/common.dart';
 class DioInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    String headerMessage = '';
     options.headers.forEach((key, value) {
-      headerMessage += '$key: $value';
     });
     try {
       options.queryParameters.forEach((key, value) {

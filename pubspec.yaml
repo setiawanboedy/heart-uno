@@ -21,7 +21,7 @@ dependencies:
   logger: ^1.1.0
   oktoast: ^3.2.0
   path_provider: ^2.0.11
-  ripple_animation: ^0.0.1+2
+  simple_ripple_animation: ^0.0.3
   syncfusion_flutter_charts: ^20.2.36
   usb_serial: ^0.4.0
 

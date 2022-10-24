@@ -19,7 +19,7 @@ class ReceiveDataGrapheController extends GetxController {
 
   RxList<GraphModel> serialData = RxList();
   RxList<int> beats = RxList();
-  var heart = Rxn<Data>();
+  var heartAnalysisResult = Rxn<Data>();
 
   Timer? timer;
 
@@ -37,7 +37,7 @@ class ReceiveDataGrapheController extends GetxController {
     data.fold((l) {
       if (l is ServerFailure) {}
     }, (r) {
-      heart(r.data);
+      heartAnalysisResult(r.data);
     });
   }
 

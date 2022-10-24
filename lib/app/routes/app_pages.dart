@@ -7,6 +7,8 @@ import '../modules/home/views/home_view.dart';
 import '../modules/pages/splash_screen.dart';
 import '../modules/receive_data_graphe/bindings/receive_data_graphe_binding.dart';
 import '../modules/receive_data_graphe/views/receive_data_graphe_view.dart';
+import '../modules/record/bindings/record_binding.dart';
+import '../modules/record/views/record_view.dart';
 import '../modules/setting/bindings/setting_binding.dart';
 import '../modules/setting/views/setting_view.dart';
 
@@ -44,6 +46,11 @@ class AppPages {
       name: _Paths.SETTING,
       page: () => const SettingView(),
       binding: SettingBinding(),
+    ),
+    GetPage(
+      name: _Paths.RECORD,
+      page: () => const RecordView(),
+      binding: RecordBinding(),
     ),
   ];
 }

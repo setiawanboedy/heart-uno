@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:ripple_animation/ripple_animation.dart';
+import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
@@ -23,6 +22,10 @@ class HomeView extends GetView<HomeController> {
         // systemOverlayStyle: const SystemUiOverlayStyle(
         //   statusBarColor: Palette.statusBarColor,
         // ),
+        leading: InkWell(
+          onTap: () => Get.toNamed(Routes.RECORD),
+          child: const Icon(Icons.save),
+        ),
         actions: [
           InkWell(
             borderRadius: BorderRadius.circular(Dimens.cornerRadius),

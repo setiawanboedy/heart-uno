@@ -2,11 +2,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/datasource/local/storage_manager.dart';
-import 'package:heart_usb/app/modules/resources/dimens.dart';
-import 'package:heart_usb/app/modules/resources/palette.dart';
-import 'package:heart_usb/app/modules/utils/strings.dart';
-import 'package:heart_usb/app/routes/app_pages.dart';
+import '../../../data/datasource/local/storage_manager.dart';
+import '../../resources/dimens.dart';
+import '../../resources/palette.dart';
+import '../../utils/strings.dart';
+import '../../../routes/app_pages.dart';
 
 import '../controllers/setting_controller.dart';
 
@@ -81,7 +81,6 @@ class SettingView extends GetView<SettingController> {
                         value: controller.selected.value,
                         onChanged: (value) {
                           controller.selected.value = value as String;
-                          print(value);
                         },
                         icon: const Icon(
                           Icons.arrow_forward_ios_outlined,

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import '../../datasource/model/heart_analysis_response.dart';
 
 class Heart extends Equatable {

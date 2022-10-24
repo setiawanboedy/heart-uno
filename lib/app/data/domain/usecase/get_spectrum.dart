@@ -1,9 +1,9 @@
-import 'package:get/get.dart';
-import '../../../../core/failure/failure.dart';
 import 'package:dartz/dartz.dart';
+import 'package:get/get.dart';
 
-import '../../repository/heart_repository.dart';
+import '../../../../core/failure/failure.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../repository/heart_repository.dart';
 
 
 class GetSpectrum extends UseCase<String, NoParams> {
