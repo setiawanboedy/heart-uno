@@ -16,7 +16,6 @@ class SettingController extends GetxController {
 
   @override
   void onInit() {
-    selected(home.portUsb);
     super.onInit();
   }
 

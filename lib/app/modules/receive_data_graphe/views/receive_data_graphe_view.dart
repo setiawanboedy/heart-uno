@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/network/network_info.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../data/graph_model.dart';
@@ -42,6 +41,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
               flex: 4,
               child: Obx(
                 () {
+                  print(controller.serialData.value);
                   return SfCartesianChart(
                     plotAreaBorderWidth: 0,
                     plotAreaBorderColor: Colors.red,
@@ -65,7 +65,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                     ),
                     series: <SplineSeries<GraphModel, num>>[
                       SplineSeries<GraphModel, num>(
-                        dataSource: controller.serialData,
+                        dataSource: controller.serialData.value,
                         xValueMapper: (GraphModel rate, _) => rate.x,
                         yValueMapper: (GraphModel rate, _) => rate.y,
                         width: 2,
@@ -90,20 +90,20 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                   return BottomGraph(
                     bpm: ctr.bpm.value,
                     func: () async {
-                      final network = NetworkInfoImpl();
-                      if (await network.isConnected) {
-                        controller.generateCsv();
-                        Get.offAllNamed(Routes.ANALYSIS);
-                      } else {
-                        Get.defaultDialog(
-                          title: "Tidak ada internet",
-                          middleText:
-                              "Pastikan koneksi ada untuk melakukan analisis",
-                          textConfirm: "OK",
-                          confirmTextColor: Colors.white,
-                          onConfirm: () => Get.back(),
-                        );
-                      }
+                      // final network = NetworkInfoImpl();
+                      // if (await network.isConnected) {
+                      controller.gotToAnalysis();
+
+                      // } else {
+                      //   Get.defaultDialog(
+                      //     title: "Tidak ada internet",
+                      //     middleText:
+                      //         "Pastikan koneksi ada untuk melakukan analisis",
+                      //     textConfirm: "OK",
+                      //     confirmTextColor: Colors.white,
+                      //     onConfirm: () => Get.back(),
+                      //   );
+                      // }
                     },
                     textButton: const Text("Analisis Sinyal"),
                   );

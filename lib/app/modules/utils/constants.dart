@@ -8,8 +8,8 @@ class Constants {
   static const threshold = 210;
 
   /// lenght of serial data in list
-  static const lenghtData = 1000;
+  static const lenghtData = 500;
 
   /// serial port to listen data from arduino
-  static const port = 115200;
+  static const port = 9600;
 }

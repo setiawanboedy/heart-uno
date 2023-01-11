@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
@@ -19,9 +18,6 @@ class HomeView extends GetView<HomeController> {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Palette.bgColor,
-        // systemOverlayStyle: const SystemUiOverlayStyle(
-        //   statusBarColor: Palette.statusBarColor,
-        // ),
         leading: InkWell(
           onTap: () => Get.toNamed(Routes.RECORD),
           child: const Icon(Icons.save),
@@ -44,33 +40,21 @@ class HomeView extends GetView<HomeController> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (controller.status == Strings.connected)
-                  RippleAnimation(
-                    repeat: true,
-                    color: Colors.green,
-                    minRadius: 100,
-                    ripplesCount: 2,
-                    child: SizedBox(
-                      width: Get.size.width * 0.4,
-                      height: Get.size.width * 0.4,
-                      child: Image.asset(
-                        "assets/icons/connected.png",
-                        scale: 0.5,
-                      ),
+                  SizedBox(
+                    width: Get.size.width * 0.4,
+                    height: Get.size.width * 0.4,
+                    child: Image.asset(
+                      "assets/icons/connected.png",
+                      scale: 0.5,
                     ),
                   )
                 else
-                  RippleAnimation(
-                    repeat: true,
-                    color: Colors.red,
-                    minRadius: 100,
-                    ripplesCount: 2,
-                    child: SizedBox(
-                      width: Get.size.width * 0.4,
-                      height: Get.size.width * 0.4,
-                      child: Image.asset(
-                        "assets/icons/disconnected.png",
-                        scale: 1,
-                      ),
+                  SizedBox(
+                    width: Get.size.width * 0.4,
+                    height: Get.size.width * 0.4,
+                    child: Image.asset(
+                      "assets/icons/disconnected.png",
+                      scale: 1,
                     ),
                   ),
                 SpacerV(value: Dimens.h1),
@@ -78,10 +62,10 @@ class HomeView extends GetView<HomeController> {
                   Column(
                     children: [
                       Text(
-                        "Connected",
-                        style: TextStyle(
-                            fontSize: Dimens.h5, color: Palette.bgColor),
-                      ),
+                            "Connected",
+                            style: TextStyle(
+                                fontSize: Dimens.h5, color: Palette.bgColor),
+                          ),
                       SpacerV(
                         value: Dimens.h4,
                       ),

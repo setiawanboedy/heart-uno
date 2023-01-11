@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../core/failure/failure.dart';
 import '../../../data/domain/usecase/post_csv.dart';
 import '../../../data/graph_model.dart';
+import '../../../routes/app_pages.dart';
 import '../../home/controllers/home_controller.dart';
 import '../../utils/dummy.dart';
 
@@ -41,26 +42,35 @@ class ReceiveDataGrapheController extends GetxController {
     });
   }
 
+  void gotToAnalysis() {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      generateCsv();
+    });
+  }
+
   Future<void> generateCsv() async {
     List<List<dynamic>> data = [
       ["hart"],
     ];
-    for (var lis in Dummy.dataList) {
-      data.add([lis]);
+    for (var lis in serialData) {
+      data.add([lis.y]);
     }
-    String csvData = const ListToCsvConverter().convert(data);
-    final String directory = (await getApplicationSupportDirectory()).path;
-    final path = "$directory/data.csv";
-    final File file = File(path);
+    serialData.clear();
+    serialData.close();
+    // String csvData = const ListToCsvConverter().convert(data);
+    // final String directory = (await getApplicationSupportDirectory()).path;
+    // final path = "$directory/data.csv";
+    // final File file = File(path);
 
-    await file.writeAsString(csvData);
-    await postUploadCsv(HeartParams(file));
+    // await file.writeAsString(csvData);
+    // await postUploadCsv(HeartParams(file));
+    Get.toNamed(Routes.ANALYSIS);
   }
 
   @override
   void onInit() {
     serialData(_homeC.serialData);
-    beats(_homeC.beats);
+    // beats(_homeC.beats);
 
     if (serialData.isNotEmpty) {
       serialData.clear();

@@ -9,10 +9,9 @@ dependencies:
   csv: ^5.0.1
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
-  data_connection_checker: ^0.3.4
   dio: ^4.0.6
   dropdown_button2: ^1.6.3
-  equatable: ^2.0.3
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.5.3+2
@@ -21,7 +20,6 @@ dependencies:
   logger: ^1.1.0
   oktoast: ^3.2.0
   path_provider: ^2.0.11
-  simple_ripple_animation: ^0.0.3
   syncfusion_flutter_charts: ^20.2.36
   usb_serial: ^0.4.0
 
