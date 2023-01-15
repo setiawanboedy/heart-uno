@@ -5,14 +5,16 @@ import '../../../resources/palette.dart';
 import '../../../widgets/spacer_v.dart';
 
 class BottomGraph extends StatelessWidget {
-  final int? bpm;
   final VoidCallback? func;
+  final VoidCallback? startPressed;
   final Widget? textButton;
+  final Duration duration;
   const BottomGraph({
     Key? key,
-    this.bpm,
     this.func,
     this.textButton,
+    this.startPressed,
+    required this.duration,
   }) : super(key: key);
 
   @override
@@ -33,21 +35,9 @@ class BottomGraph extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(
-                    "$bpm BPM",
-                    style:
-                        TextStyle(fontSize: Dimens.h6, color: Colors.white),
-                  ),
-                  const SpacerV(
-                  ),
-                  ElevatedButton(
-                    onPressed: func,
-                    child: SizedBox(
-                      width: Dimens.space50 * 2,
-                      height: Dimens.buttonH,
-                      child: Center(child: textButton),
-                    ),
-                  ),
+                  buildTime(),
+                  const SpacerV(),
+                  buildButton(),
                 ],
               ),
             )
@@ -56,4 +46,60 @@ class BottomGraph extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildButton() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: func,
+            child: SizedBox(
+              width: Dimens.space50 * 2,
+              height: Dimens.buttonH,
+              child: Center(child: textButton),
+            ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          ElevatedButton(
+            onPressed: startPressed,
+            child: SizedBox(
+              width: Dimens.space50 * 2,
+              height: Dimens.buttonH,
+              child: Center(child: Text("Mulai")),
+            ),
+          ),
+        ],
+      );
+
+  Widget buildTime() {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      buildTimeCard(time: hours),
+      const Text(
+        ":",
+        style: TextStyle(color: Colors.white, fontSize: 18),
+      ),
+      buildTimeCard(time: minutes),
+      const Text(
+        ":",
+        style: TextStyle(color: Colors.white, fontSize: 18),
+      ),
+      buildTimeCard(time: seconds),
+    ]);
+  }
+
+  Widget buildTimeCard({required String time}) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            " $time ",
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18),
+          ),
+        ],
+      );
 }

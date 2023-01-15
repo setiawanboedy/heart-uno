@@ -39,7 +39,7 @@ class HomeView extends GetView<HomeController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (controller.status == Strings.connected)
+                if (controller.detected.isNotEmpty)
                   SizedBox(
                     width: Get.size.width * 0.4,
                     height: Get.size.width * 0.4,
@@ -58,7 +58,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                 SpacerV(value: Dimens.h1),
-                if (controller.status == Strings.connected)
+                if (controller.detected.isNotEmpty)
                   Column(
                     children: [
                       Text(
