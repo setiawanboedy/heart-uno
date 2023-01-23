@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/data/datasource/model/heart_analysis_response.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
@@ -16,6 +17,7 @@ class AnalysisView extends GetView<AnalysisController> {
   const AnalysisView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final file = Get.arguments as Data;
     return Parent(
       appBar: AppBar(
         elevation: 0,
@@ -76,45 +78,36 @@ class AnalysisView extends GetView<AnalysisController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
-                width: Get.size.width,
-                height: Get.size.height * 0.35,
-                child: Obx(() {
-                  if (controller.receive.heartAnalysisResult.value != null) {
-                    return GridView.count(
-                      shrinkWrap: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: [
-                        CardAnalysis(
-                          value:
-                              controller.receive.heartAnalysisResult.value?.ibi,
-                          title: "IBI",
-                        ),
-                        CardAnalysis(
-                          value: controller
-                              .receive.heartAnalysisResult.value?.rmssd,
-                          title: "RMSSD",
-                        ),
-                        CardAnalysis(
-                          value: controller
-                              .receive.heartAnalysisResult.value?.sdnn,
-                          title: "SDNN",
-                        ),
-                        CardAnalysis(
-                          value: controller
-                              .receive.heartAnalysisResult.value?.sdsd,
-                          title: "SDSD",
-                        ),
-                      ],
-                    );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
-              ),
+                  width: Get.size.width,
+                  height: Get.size.height * 0.35,
+                  child: (file.bpm != null)
+                      ? GridView.count(
+                          shrinkWrap: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          childAspectRatio: 3 / 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          children: [
+                            CardAnalysis(
+                              value: file.ibi,
+                              title: "IBI",
+                            ),
+                            CardAnalysis(
+                              value: file.rmssd,
+                              title: "RMSSD",
+                            ),
+                            CardAnalysis(
+                              value: file.sdnn,
+                              title: "SDNN",
+                            ),
+                            CardAnalysis(
+                              value: file.sdsd,
+                              title: "SDSD",
+                            ),
+                          ],
+                        )
+                      : const Center(child: CircularProgressIndicator())),
             ),
             SpacerV(
               value: Dimens.space16,
@@ -149,34 +142,28 @@ class AnalysisView extends GetView<AnalysisController> {
               child: SizedBox(
                 width: Get.size.width,
                 height: Get.size.height * 0.2,
-                child: Obx(() {
-                  if (controller.receive.heartAnalysisResult.value != null) {
-                    return GridView.count(
-                      shrinkWrap: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      children: [
-                        CardAnalysis(
-                          value:
-                              controller.receive.heartAnalysisResult.value?.hf,
-                          title: "HF",
-                        ),
-                        CardAnalysis(
-                          value:
-                              controller.receive.heartAnalysisResult.value?.lf,
-                          title: "LF",
-                        ),
-                      ],
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }),
+                child: (file.bpm != null)
+                    ? GridView.count(
+                        shrinkWrap: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        childAspectRatio: 3 / 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        children: [
+                          CardAnalysis(
+                            value: file.hf,
+                            title: "HF",
+                          ),
+                          CardAnalysis(
+                            value: file.lf,
+                            title: "LF",
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child: CircularProgressIndicator(),
+                      ),
               ),
             )
           ],

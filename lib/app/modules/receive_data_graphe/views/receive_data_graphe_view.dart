@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -28,12 +27,6 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
         backgroundColor: Palette.bgColor,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Icon(Icons.save_as_rounded),
-          )
-        ],
         leading: IconButton(
           onPressed: () {
             Get.offAllNamed(Routes.HOME);
@@ -104,27 +97,12 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                           controller.startTimer();
                         },
                         func: () async {
-                          // controller.startTimer();
-                          // final network = NetworkInfoImpl();
-                          // if (await network.isConnected) {
-                          // controller.gotToAnalysis();
-
-                          // } else {
-                          //   Get.defaultDialog(
-                          //     title: "Tidak ada internet",
-                          //     middleText:
-                          //         "Pastikan koneksi ada untuk melakukan analisis",
-                          //     textConfirm: "OK",
-                          //     confirmTextColor: Colors.white,
-                          //     onConfirm: () => Get.back(),
-                          //   );
-                          // }
-
                           showDialog(
                               context: context,
                               builder: ((context) {
                                 return buildDialog(hourC, minuteC);
                               }));
+
                         },
                         textButton: const Text("Atur Waktu"),
                       ));

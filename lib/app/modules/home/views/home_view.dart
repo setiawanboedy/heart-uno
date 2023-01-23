@@ -5,7 +5,6 @@ import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
 import '../../resources/dimens.dart';
 import '../../resources/palette.dart';
-import '../../utils/strings.dart';
 import '../../widgets/spacer_v.dart';
 import '../controllers/home_controller.dart';
 
@@ -62,10 +61,10 @@ class HomeView extends GetView<HomeController> {
                   Column(
                     children: [
                       Text(
-                            "Connected",
-                            style: TextStyle(
-                                fontSize: Dimens.h5, color: Palette.bgColor),
-                          ),
+                        "Connected",
+                        style: TextStyle(
+                            fontSize: Dimens.h5, color: Palette.bgColor),
+                      ),
                       SpacerV(
                         value: Dimens.h4,
                       ),
@@ -96,6 +95,7 @@ class HomeView extends GetView<HomeController> {
                       ElevatedButton(
                         onPressed: () {
                           Get.toNamed(Routes.RECEIVE_DATA_GRAPHE);
+                        
                         },
                         child: Container(
                           padding: EdgeInsets.all(Dimens.button),

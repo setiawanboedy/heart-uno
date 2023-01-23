@@ -1,16 +1,18 @@
 import 'package:get/get.dart';
 
+import '../../../../core/failure/failure.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../data/datasource/model/heart_analysis_response.dart';
 import '../../../data/domain/usecase/get_original.dart';
 import '../../../data/domain/usecase/get_spectrum.dart';
-import '../../receive_data_graphe/controllers/receive_data_graphe_controller.dart';
+import '../../../data/domain/usecase/post_csv.dart';
 
 class AnalysisController extends GetxController {
   final GetOriginal getOriginal = Get.put(GetOriginal());
   final GetSpectrum getSpectrum = Get.put(GetSpectrum());
+  // final PostCsv postCsv = Get.put(PostCsv());
 
-  final ReceiveDataGrapheController receive =
-      Get.find<ReceiveDataGrapheController>();
+  // var heartAnalysisResult = Rxn<Data>();
 
   final RxnString oriImage = RxnString();
   final RxnString spectrumImage = RxnString();
@@ -41,6 +43,16 @@ class AnalysisController extends GetxController {
     );
   }
 
+  // Future<void> postUploadCsv(HeartParams params) async {
+  //   final data = await postCsv.call(params);
+
+  //   data.fold((l) {
+  //     if (l is ServerFailure) {}
+  //   }, (r) {
+  //     heartAnalysisResult(r.data);
+  //   });
+  // }
+
   @override
   void onInit() async {
     await getOriUrlImage();
@@ -48,5 +60,4 @@ class AnalysisController extends GetxController {
 
     super.onInit();
   }
-
 }

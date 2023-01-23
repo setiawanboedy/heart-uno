@@ -23,11 +23,12 @@ class HeartDatasourceImpl implements HeartDatasource {
         ListApi.uploadCsv,
         file: params.toJson(),
       );
-      final result = HeartAnalysisResponse.fromJson(response.data);
+      
       if (response.statusCode == 200) {
+        final result = HeartAnalysisResponse.fromJson(response.data);
         return result;
       } else {
-        throw ServerException(result.toString());
+        throw ServerException(response.statusMessage);
       }
     } on ServerException catch (e) {
       throw ServerException(e.message);

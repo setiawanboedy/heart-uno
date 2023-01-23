@@ -2,29 +2,21 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/modules/resources/dimens.dart';
 import 'package:heart_usb/app/modules/utils/constants.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 import '../../../data/data_model.dart';
-import '../../../data/datasource/model/heart_analysis_response.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../core/failure/failure.dart';
-import '../../../data/domain/usecase/post_csv.dart';
 import '../../../data/graph_model.dart';
 import '../../../routes/app_pages.dart';
-import '../../home/controllers/home_controller.dart';
-import '../../utils/dummy.dart';
 import '../../utils/strings.dart';
 
 class ReceiveDataGrapheController extends GetxController {
-  final HomeController _homeC = Get.put(HomeController());
-  final PostCsv postCsv = Get.put(PostCsv());
-
-  var heartAnalysisResult = Rxn<Data>();
-
   RxInt bpm = 0.obs;
   Timer? timer;
 
@@ -85,6 +77,7 @@ class ReceiveDataGrapheController extends GetxController {
     final seconds = duration.value!.inSeconds + addSeconds;
     if (seconds < 0) {
       timerRecord?.cancel();
+      dialogAnalysis();
     } else {
       duration(Duration(seconds: seconds));
     }
@@ -141,13 +134,15 @@ class ReceiveDataGrapheController extends GetxController {
       _port.value?.inputStream as Stream<Uint8List>,
       Uint8List.fromList([13, 10]),
     ).stream.listen((String line) {
+      final time = DateTime.now();
       _serialData.add(GraphModel(y: int.parse(line), x: count++));
-      _serialDataSave.add(GraphModel(y: int.parse(line), x: count++));
-      calcualteBPM(int.parse(line));
+      _serialDataSave.add(GraphModel(y: int.parse(line), x: count++, time: time));
+      // calcualteBPM(int.parse(line));
       if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);
       }
-      if (_serialDataSave.length > (startCountdownRecord.value?.inSeconds as int)) {
+      if (_serialDataSave.length >
+          (startCountdownRecord.value?.inMilliseconds as int)) {
         _serialDataSave.removeAt(0);
       }
       update();
@@ -156,12 +151,13 @@ class ReceiveDataGrapheController extends GetxController {
     return true;
   }
 
+
+
   /// Get device information
   Future<void> _getPorts() async {
     _ports([]);
     List<UsbDevice> devices = await UsbSerial.listDevices();
     if (!devices.contains(_device.value)) {
-      
       connectTo(null);
     }
     timer?.cancel();
@@ -175,11 +171,11 @@ class ReceiveDataGrapheController extends GetxController {
   }
 
   /// add peak data
-  void calcualteBPM(int data) {
-    if (data > Constants.threshold) {
-      _beats.add(data);
-    }
-  }
+  // void calcualteBPM(int data) {
+  //   if (data > Constants.threshold) {
+  //     _beats.add(data);
+  //   }
+  // }
 
   void getBPM() {
     bpm.value = beats.length * 10;
@@ -187,38 +183,48 @@ class ReceiveDataGrapheController extends GetxController {
     update();
   }
 
-  void gotToAnalysis() {
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      generateCsv();
-    });
-  }
-
   Future<void> generateCsv() async {
     List<List<dynamic>> data = [
-      ["hart"],
+      ["hart", "time"],
     ];
     for (var lis in serialDataSave) {
-      data.add([lis.y]);
+      data.add([lis.y, lis.time]);
     }
-    resetData();
-    // String csvData = const ListToCsvConverter().convert(data);
-    // final String directory = (await getApplicationSupportDirectory()).path;
-    // final path = "$directory/data.csv";
-    // final File file = File(path);
+    String csvData = const ListToCsvConverter().convert(data);
+    final String directory = (await getApplicationDocumentsDirectory()).path;
+    final date = DateTime.now();
+    final path = "$directory/$date-ecg.csv";
+    final File file = File(path);
 
-    // await file.writeAsString(csvData);
-    // await postUploadCsv(HeartParams(file));
-    // Get.toNamed(Routes.ANALYSIS);
+    await file.writeAsString(csvData);
+    // print(serialDataSave.length);
+    // Get.toNamed(Routes.ANALYSIS, arguments: file);
   }
 
-  Future<void> postUploadCsv(HeartParams params) async {
-    final data = await postCsv.call(params);
-
-    data.fold((l) {
-      if (l is ServerFailure) {}
-    }, (r) {
-      heartAnalysisResult(r.data);
-    });
+  void dialogAnalysis() {
+    Get.defaultDialog(
+      title: "Lanjut ke Analysis?",
+      content: Padding(
+        padding: EdgeInsets.symmetric(horizontal: Dimens.space16),
+        child: const Text(
+            "Lakukan analysis untuk mengetahui informasi lebih lanjut"),
+      ),
+      confirm: ElevatedButton(
+          style: ElevatedButton.styleFrom(elevation: 0),
+          onPressed: () {
+            generateCsv();
+            connectTo(null);
+            Get.back();
+          },
+          child: const Text("Lanjut")),
+      cancel: ElevatedButton(
+        style: ElevatedButton.styleFrom(elevation: 0),
+        onPressed: () {
+          Get.back();
+        },
+        child: const Text("Tidak"),
+      ),
+    );
   }
 
   void resetData() {
