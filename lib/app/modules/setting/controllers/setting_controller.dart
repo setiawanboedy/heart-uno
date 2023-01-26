@@ -14,10 +14,5 @@ class SettingController extends GetxController {
 
   RxString selected = Strings.defaultValue.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
 
 }

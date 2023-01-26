@@ -6,15 +6,16 @@ import 'package:get/get.dart';
 import 'package:heart_usb/app/data/domain/usecase/post_csv.dart';
 import 'package:heart_usb/app/modules/resources/dimens.dart';
 
-import '../../../routes/app_pages.dart';
 import '../../resources/palette.dart';
 import '../controllers/record_controller.dart';
-import 'package:path/path.dart' as p;
 
 class RecordView extends GetView<RecordController> {
   const RecordView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // controller.files.sort(
+    //     (FileSystemEntity a, FileSystemEntity b) => b.path.compareTo(a.path));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hasil Rekaman'),
@@ -34,9 +35,11 @@ class RecordView extends GetView<RecordController> {
 
   Widget _cardRecord(FileSystemEntity file) {
     return InkWell(
+      onLongPress: () {
+        controller.deleteFile(file.path);
+      },
       onTap: () {
         File fileCsv = File(file.path);
-        controller.loading(true);
         controller.postUploadCsv(HeartParams(fileCsv));
       },
       child: Container(

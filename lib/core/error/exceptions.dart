@@ -4,6 +4,12 @@ class ServerException implements Exception {
   ServerException(this.message);
 }
 
+class LocalException implements Exception {
+  String? message;
+
+  LocalException(this.message);
+}
+
 class CacheException implements Exception {
   String? message;
   CacheException(this.message);

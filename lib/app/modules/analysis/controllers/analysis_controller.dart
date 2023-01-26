@@ -1,11 +1,8 @@
 import 'package:get/get.dart';
 
-import '../../../../core/failure/failure.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../../../data/datasource/model/heart_analysis_response.dart';
 import '../../../data/domain/usecase/get_original.dart';
 import '../../../data/domain/usecase/get_spectrum.dart';
-import '../../../data/domain/usecase/post_csv.dart';
 
 class AnalysisController extends GetxController {
   final GetOriginal getOriginal = Get.put(GetOriginal());

@@ -12,6 +12,14 @@ class ServerFailure extends Failure {
   List<Object?> get props => [message];
 }
 
+class LocalFailure extends Failure {
+  final String? message;
+
+  const LocalFailure(this.message);
+  @override
+  List<Object?> get props => [message];
+}
+
 class NoDataFailure extends Failure {
   @override
   List<Object?> get props => [];

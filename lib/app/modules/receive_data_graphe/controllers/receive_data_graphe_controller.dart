@@ -13,7 +13,6 @@ import '../../../data/data_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../data/graph_model.dart';
-import '../../../routes/app_pages.dart';
 import '../../utils/strings.dart';
 
 class ReceiveDataGrapheController extends GetxController {
@@ -136,7 +135,8 @@ class ReceiveDataGrapheController extends GetxController {
     ).stream.listen((String line) {
       final time = DateTime.now();
       _serialData.add(GraphModel(y: int.parse(line), x: count++));
-      _serialDataSave.add(GraphModel(y: int.parse(line), x: count++, time: time));
+      _serialDataSave
+          .add(GraphModel(y: int.parse(line), x: count++, time: time));
       // calcualteBPM(int.parse(line));
       if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);
@@ -150,8 +150,6 @@ class ReceiveDataGrapheController extends GetxController {
     update();
     return true;
   }
-
-
 
   /// Get device information
   Future<void> _getPorts() async {
@@ -203,11 +201,11 @@ class ReceiveDataGrapheController extends GetxController {
 
   void dialogAnalysis() {
     Get.defaultDialog(
-      title: "Lanjut ke Analysis?",
+      title: "Simpan untuk Analisis?",
       content: Padding(
         padding: EdgeInsets.symmetric(horizontal: Dimens.space16),
         child: const Text(
-            "Lakukan analysis untuk mengetahui informasi lebih lanjut"),
+            "Simpan untuk mengetahui informasi lebih lanjut pada analisis nanti"),
       ),
       confirm: ElevatedButton(
           style: ElevatedButton.styleFrom(elevation: 0),
@@ -216,7 +214,7 @@ class ReceiveDataGrapheController extends GetxController {
             connectTo(null);
             Get.back();
           },
-          child: const Text("Lanjut")),
+          child: const Text("Simpan")),
       cancel: ElevatedButton(
         style: ElevatedButton.styleFrom(elevation: 0),
         onPressed: () {

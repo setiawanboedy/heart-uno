@@ -76,6 +76,19 @@ class AnalysisView extends GetView<AnalysisController> {
             ),
             const SpacerV(),
             Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: SizedBox(
+                height: 85,
+                child: CardAnalysis(
+                  value: file.bpm,
+                  title: "BPM",
+                ),
+              ),
+            ),
+            const SpacerV(),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
                   width: Get.size.width,

@@ -1,5 +1,4 @@
 
-import 'package:get/get.dart';
 
 abstract class NetworkInfo {
   Future<bool> get isConnected;

@@ -66,7 +66,7 @@ class BottomGraph extends StatelessWidget {
             child: SizedBox(
               width: Dimens.space50 * 2,
               height: Dimens.buttonH,
-              child: Center(child: Text("Mulai")),
+              child: const Center(child: Text("Mulai")),
             ),
           ),
         ],
