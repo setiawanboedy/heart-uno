@@ -1,28 +1,41 @@
 import 'package:get/get.dart';
+import 'package:heart_usb/app/data/domain/usecase/get_analysis.dart';
 
+import '../../../../core/failure/failure.dart';
 import '../../../../core/usecase/usecase.dart';
+import '../../../data/datasource/model/heart_analysis_model.dart';
 import '../../../data/domain/usecase/get_original.dart';
 import '../../../data/domain/usecase/get_spectrum.dart';
+
+class OriChart {
+  final int x;
+  final double y;
+
+  OriChart(this.x, this.y);
+}
 
 class AnalysisController extends GetxController {
   final GetOriginal getOriginal = Get.put(GetOriginal());
   final GetSpectrum getSpectrum = Get.put(GetSpectrum());
-  // final PostCsv postCsv = Get.put(PostCsv());
+  final GetAnalysis analysis = Get.put(GetAnalysis());
 
-  // var heartAnalysisResult = Rxn<Data>();
+  var heartResult = Rxn<Data>();
 
-  final RxnString oriImage = RxnString();
+  final RxList<OriChart> oriImage = RxList.empty(growable: true);
+
   final RxnString spectrumImage = RxnString();
 
   Future<void> getOriUrlImage() async {
     final data = await getOriginal.call(NoParams());
-
+    oriImage.clear();
     data.fold(
       (l) {
-        oriImage(l.toString());
+        // oriImage([]);
       },
       (r) {
-        oriImage(r);
+        for (int i = 0; i < r.ecg.length; i++) {
+          oriImage.add(OriChart(i, r.ecg[i]));
+        }
       },
     );
   }
@@ -40,20 +53,21 @@ class AnalysisController extends GetxController {
     );
   }
 
-  // Future<void> postUploadCsv(HeartParams params) async {
-  //   final data = await postCsv.call(params);
+  Future<void> getAnalysis() async {
+    final data = await analysis.call(NoParams());
 
-  //   data.fold((l) {
-  //     if (l is ServerFailure) {}
-  //   }, (r) {
-  //     heartAnalysisResult(r.data);
-  //   });
-  // }
+    data.fold((l) {
+      if (l is ServerFailure) {}
+    }, (r) {
+      heartResult(r.data);
+    });
+  }
 
   @override
-  void onInit() async {
-    await getOriUrlImage();
-    await getSpecUrlImage();
+  void onInit() {
+    getOriUrlImage();
+    getSpecUrlImage();
+    getAnalysis();
 
     super.onInit();
   }

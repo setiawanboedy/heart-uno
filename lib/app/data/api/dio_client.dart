@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'dio_interceptor.dart';
 
 class DioClient {
-  String baseUrl = "https://heart-uno.onrender.com";
+  String baseUrl = "https://new-uno.onrender.com";
 
   late Dio _dio;
   bool _isUnitTest = false;
@@ -42,13 +42,9 @@ class DioClient {
   }
 
   Future<Response> getRequest(
-    String url, {
-    Map<String, dynamic>? queryParameters,
-  }) async {
+    String url) async {
     try {
-      final response = await dio.get(url, queryParameters: queryParameters, options: Options(
-        contentType: "image/png"
-      ));
+      final response = await dio.get(url);
       return response;
     } on DioError catch (e) {
       throw Exception(e.message);

@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
 import 'package:heart_usb/app/data/datasource/local/sql_helper.dart';
 import 'package:heart_usb/app/data/datasource/model/heart_item_model.dart';
+import 'package:heart_usb/app/data/datasource/model/original_model.dart';
 import '../../../core/usecase/usecase.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../api/dio_client.dart';
 import '../api/list_api.dart';
 import '../domain/usecase/post_csv.dart';
-import 'model/heart_analysis_response.dart';
+import 'model/heart_analysis_model.dart';
 
 abstract class HeartDatasource {
-  Future<HeartAnalysisResponse> uploadCSV(HeartParams params);
-  Future<String> getOriginal(NoParams params);
+  Future<String> uploadCSV(HeartParams params);
+  Future<HeartAnalysisModel> getAnalysis(NoParams params);
+  Future<OriginalModel> getOriginal(NoParams params);
   Future<String> getSpectrum(NoParams params);
   Future<int> saveHeartItem(HeartItemModel params);
   Future<List<Map<String, dynamic>>> getHeartItems();
@@ -23,7 +25,7 @@ class HeartDatasourceImpl implements HeartDatasource {
   final DioClient _client = Get.put(DioClient());
 
   @override
-  Future<HeartAnalysisResponse> uploadCSV(HeartParams params) async {
+  Future<String> uploadCSV(HeartParams params) async {
     try {
       final response = await _client.postRequest(
         ListApi.uploadCsv,
@@ -31,7 +33,7 @@ class HeartDatasourceImpl implements HeartDatasource {
       );
 
       if (response.statusCode == 200) {
-        final result = HeartAnalysisResponse.fromJson(response.data);
+        const result = "success";
         return result;
       } else {
         throw ServerException(response.statusMessage);
@@ -42,12 +44,12 @@ class HeartDatasourceImpl implements HeartDatasource {
   }
 
   @override
-  Future<String> getOriginal(NoParams params) async {
+  Future<OriginalModel> getOriginal(NoParams params) async {
     try {
       final response = await _client.getRequest(ListApi.originalImage);
       final result = response.data;
       if (response.statusCode == 200) {
-        return result;
+        return OriginalModel.fromJson(result);
       } else {
         throw ServerException(result.toString());
       }
@@ -65,6 +67,22 @@ class HeartDatasourceImpl implements HeartDatasource {
         return result;
       } else {
         throw ServerException(result.toString());
+      }
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    }
+  }
+
+  @override
+  Future<HeartAnalysisModel> getAnalysis(NoParams params) async {
+    try {
+      final response = await _client.getRequest(ListApi.data);
+
+      if (response.statusCode == 200) {
+        final result = HeartAnalysisModel.fromJson(response.data);
+        return result;
+      } else {
+        throw ServerException(response.statusMessage);
       }
     } on ServerException catch (e) {
       throw ServerException(e.message);

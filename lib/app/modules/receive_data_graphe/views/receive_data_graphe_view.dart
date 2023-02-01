@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../data/graph_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../resources/palette.dart';
-import '../../utils/constants.dart';
 import '../controllers/receive_data_graphe_controller.dart';
 import 'widgets/bottom_graph.dart';
 
@@ -82,32 +80,22 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
             if (context.isLandscape == true)
               Container()
             else
-              GetBuilder<ReceiveDataGrapheController>(
-                init: ReceiveDataGrapheController(),
-                initState: (_) {
-                  controller.timer = Timer.periodic(
-                      const Duration(seconds: Constants.timer), (timer) {
-                    controller.getBPM();
-                  });
-                },
-                builder: (ctr) {
-                  return Obx(() => BottomGraph(
-                        duration: controller.duration.value ?? const Duration(),
-                        startPressed: () {
-                          controller.startTimer();
-                        },
-                        func: () async {
-                          showDialog(
-                              context: context,
-                              builder: ((context) {
-                                return buildDialog(hourC, minuteC);
-                              }));
-
-                        },
-                        textButton: const Text("Atur Waktu"),
-                      ));
-                },
-              )
+              Obx(
+                () => BottomGraph(
+                  duration: controller.duration.value ?? const Duration(),
+                  startPressed: () {
+                    controller.dialogAnalysis();
+                  },
+                  func: () async {
+                    showDialog(
+                        context: context,
+                        builder: ((context) {
+                          return buildDialog(hourC, minuteC);
+                        }));
+                  },
+                  textButton: const Text("Atur Waktu"),
+                ),
+              ),
           ],
         ),
       ),

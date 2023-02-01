@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/datasource/model/heart_analysis_response.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
@@ -17,7 +17,6 @@ class AnalysisView extends GetView<AnalysisController> {
   const AnalysisView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final file = Get.arguments as Data;
     return Parent(
       appBar: AppBar(
         elevation: 0,
@@ -26,7 +25,7 @@ class AnalysisView extends GetView<AnalysisController> {
         title: const Text("Analysis Sinyal Jantung"),
         leading: IconButton(
             onPressed: () {
-              Get.offAllNamed(Routes.HOME);
+              Get.offNamed(Routes.RECORD);
             },
             icon: const Icon(Icons.arrow_back)),
       ),
@@ -52,10 +51,36 @@ class AnalysisView extends GetView<AnalysisController> {
             const SpacerV(),
             CardGraph(
               image: Obx(
-                () => controller.oriImage.value != null
-                    ? Image.memory(
-                        base64Decode(controller.oriImage.value!),
-                        fit: BoxFit.cover,
+                () => controller.oriImage.value.isNotEmpty
+                    ? SfCartesianChart(
+                        plotAreaBorderWidth: 0,
+                        plotAreaBorderColor: Colors.red,
+                        primaryXAxis: NumericAxis(
+                          maximumLabelWidth: 100,
+                          axisLine: const AxisLine(width: 1),
+                          majorTickLines: const MajorTickLines(width: 0),
+                          title: AxisTitle(
+                            text: "Time (ms)",
+                            textStyle: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        primaryYAxis: NumericAxis(
+                          maximumLabelWidth: 400,
+                          axisLine: const AxisLine(width: 1),
+                          majorTickLines: const MajorTickLines(size: 0),
+                          title: AxisTitle(
+                            text: "ECG (mV)",
+                            textStyle: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        series: <SplineSeries<OriChart, num>>[
+                          SplineSeries<OriChart, num>(
+                            dataSource: controller.oriImage.value,
+                            xValueMapper: (OriChart rate, _) => rate.x,
+                            yValueMapper: (OriChart rate, _) => rate.y,
+                            width: 2,
+                          ),
+                        ],
                       )
                     : const Center(child: CircularProgressIndicator()),
               ),
@@ -81,19 +106,26 @@ class AnalysisView extends GetView<AnalysisController> {
               ),
               child: SizedBox(
                 height: 85,
-                child: CardAnalysis(
-                  value: file.bpm,
-                  title: "BPM",
+                child: Obx(
+                  () => controller.heartResult.value != null
+                      ? CardAnalysis(
+                          value: controller.heartResult.value?.bpm,
+                          title: "BPM",
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                 ),
               ),
             ),
             const SpacerV(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SizedBox(
+              child: Obx(
+                () => SizedBox(
                   width: Get.size.width,
                   height: Get.size.height * 0.35,
-                  child: (file.bpm != null)
+                  child: (controller.heartResult.value?.bpm != null)
                       ? GridView.count(
                           shrinkWrap: false,
                           physics: const NeverScrollableScrollPhysics(),
@@ -103,24 +135,28 @@ class AnalysisView extends GetView<AnalysisController> {
                           mainAxisSpacing: 10,
                           children: [
                             CardAnalysis(
-                              value: file.ibi,
+                              value: controller.heartResult.value?.ibi,
                               title: "IBI",
                             ),
                             CardAnalysis(
-                              value: file.rmssd,
+                              value: controller.heartResult.value?.rmssd,
                               title: "RMSSD",
                             ),
                             CardAnalysis(
-                              value: file.sdnn,
+                              value: controller.heartResult.value?.sdnn,
                               title: "SDNN",
                             ),
                             CardAnalysis(
-                              value: file.sdsd,
+                              value: controller.heartResult.value?.sdsd,
                               title: "SDSD",
                             ),
                           ],
                         )
-                      : const Center(child: CircularProgressIndicator())),
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
+              ),
             ),
             SpacerV(
               value: Dimens.space16,
@@ -152,31 +188,33 @@ class AnalysisView extends GetView<AnalysisController> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SizedBox(
-                width: Get.size.width,
-                height: Get.size.height * 0.2,
-                child: (file.bpm != null)
-                    ? GridView.count(
-                        shrinkWrap: false,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        childAspectRatio: 3 / 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        children: [
-                          CardAnalysis(
-                            value: file.hf,
-                            title: "HF",
-                          ),
-                          CardAnalysis(
-                            value: file.lf,
-                            title: "LF",
-                          ),
-                        ],
-                      )
-                    : const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+              child: Obx(
+                () => SizedBox(
+                  width: Get.size.width,
+                  height: Get.size.height * 0.2,
+                  child: (controller.heartResult.value?.bpm != null)
+                      ? GridView.count(
+                          shrinkWrap: false,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          childAspectRatio: 3 / 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          children: [
+                            CardAnalysis(
+                              value: controller.heartResult.value?.hf,
+                              title: "HF",
+                            ),
+                            CardAnalysis(
+                              value: controller.heartResult.value?.lf,
+                              title: "LF",
+                            ),
+                          ],
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                ),
               ),
             )
           ],

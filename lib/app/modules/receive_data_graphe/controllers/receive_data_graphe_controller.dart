@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/data/datasource/model/heart_item_model.dart';
+import 'package:heart_usb/app/data/domain/usecase/save_heart.dart';
 import 'package:heart_usb/app/modules/resources/dimens.dart';
 import 'package:heart_usb/app/modules/utils/constants.dart';
+import 'package:heart_usb/core/failure/failure.dart';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 import '../../../data/data_model.dart';
@@ -16,6 +20,12 @@ import '../../../data/graph_model.dart';
 import '../../utils/strings.dart';
 
 class ReceiveDataGrapheController extends GetxController {
+  final TextEditingController name = TextEditingController();
+  final TextEditingController age = TextEditingController();
+  final TextEditingController desc = TextEditingController();
+
+  final SaveHeart saveHeart = Get.put(SaveHeart());
+
   RxInt bpm = 0.obs;
   Timer? timer;
 
@@ -76,7 +86,8 @@ class ReceiveDataGrapheController extends GetxController {
     final seconds = duration.value!.inSeconds + addSeconds;
     if (seconds < 0) {
       timerRecord?.cancel();
-      dialogAnalysis();
+      generateCsv();
+      connectTo(null);
     } else {
       duration(Duration(seconds: seconds));
     }
@@ -168,12 +179,6 @@ class ReceiveDataGrapheController extends GetxController {
     }
   }
 
-  /// add peak data
-  // void calcualteBPM(int data) {
-  //   if (data > Constants.threshold) {
-  //     _beats.add(data);
-  //   }
-  // }
 
   void getBPM() {
     bpm.value = beats.length * 10;
@@ -195,23 +200,56 @@ class ReceiveDataGrapheController extends GetxController {
     final File file = File(path);
 
     await file.writeAsString(csvData);
-    // print(serialDataSave.length);
-    // Get.toNamed(Routes.ANALYSIS, arguments: file);
+    saveToLocal(path);
+  }
+
+  void saveToLocal(String path) async {
+    final params = HeartItemModel(
+      name: name.text,
+      age: int.parse(age.text),
+      desc: desc.text,
+      path: path,
+    );
+    final data = await saveHeart.call(params);
+    data.fold((l) {
+      if (l is ServerFailure) {
+        if (kDebugMode) {
+          print(l.message);
+        }
+      }
+    }, (r) {
+      if (kDebugMode) {
+        print(r);
+      }
+    });
   }
 
   void dialogAnalysis() {
     Get.defaultDialog(
       title: "Simpan untuk Analisis?",
       content: Padding(
-        padding: EdgeInsets.symmetric(horizontal: Dimens.space16),
-        child: const Text(
-            "Simpan untuk mengetahui informasi lebih lanjut pada analisis nanti"),
-      ),
+          padding: EdgeInsets.symmetric(horizontal: Dimens.space16),
+          child: Column(
+            children: [
+              TextFormField(
+                controller: name,
+                decoration: const InputDecoration(hintText: "Nama"),
+              ),
+              TextFormField(
+                controller: age,
+                decoration: const InputDecoration(hintText: "Umur"),
+              ),
+              TextFormField(
+                controller: desc,
+                decoration: const InputDecoration(hintText: "Deskripsi"),
+              )
+            ],
+          )),
       confirm: ElevatedButton(
           style: ElevatedButton.styleFrom(elevation: 0),
           onPressed: () {
-            generateCsv();
-            connectTo(null);
+            
+            startTimer();
             Get.back();
           },
           child: const Text("Simpan")),

@@ -1,14 +1,14 @@
 import '../../domain/entities/heart.dart';
 
-class HeartAnalysisResponse {
-  HeartAnalysisResponse({
+class HeartAnalysisModel {
+  HeartAnalysisModel({
     this.data,
   });
 
   Data? data;
 
-  factory HeartAnalysisResponse.fromJson(Map<String, dynamic> json) =>
-      HeartAnalysisResponse(
+  factory HeartAnalysisModel.fromJson(Map<String, dynamic> json) =>
+      HeartAnalysisModel(
         data: Data.fromJson(json["data"]),
       );
 

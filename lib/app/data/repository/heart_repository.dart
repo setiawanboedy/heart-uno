@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
 import 'package:heart_usb/app/data/datasource/model/heart_item_model.dart';
+import 'package:heart_usb/app/data/datasource/model/original_model.dart';
 
 import '../../../core/error/exceptions.dart';
 import '../../../core/failure/failure.dart';
@@ -10,8 +11,9 @@ import '../domain/entities/heart.dart';
 import '../domain/usecase/post_csv.dart';
 
 abstract class HeartRepository {
-  Future<Either<Failure, Heart>> uploadCsv(HeartParams params);
-  Future<Either<Failure, String>> getOriginal(NoParams params);
+  Future<Either<Failure, String>> uploadCsv(HeartParams params);
+  Future<Either<Failure, Heart>> getAnalysis(NoParams params);
+  Future<Either<Failure, OriginalModel>> getOriginal(NoParams params);
   Future<Either<Failure, String>> getSpectrum(NoParams params);
 
   Future<Either<Failure, int>> saveHeartItem(HeartItemModel params);
@@ -24,9 +26,19 @@ class HeartRepositoryImpl implements HeartRepository {
   final HeartDatasource heartDatasource = Get.put(HeartDatasourceImpl());
 
   @override
-  Future<Either<Failure, Heart>> uploadCsv(HeartParams params) async {
+  Future<Either<Failure, String>> uploadCsv(HeartParams params) async {
     try {
       final response = await heartDatasource.uploadCSV(params);
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Heart>> getAnalysis(NoParams params) async {
+    try {
+      final response = await heartDatasource.getAnalysis(params);
       return Right(response.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
@@ -34,7 +46,7 @@ class HeartRepositoryImpl implements HeartRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getOriginal(NoParams params) async {
+  Future<Either<Failure, OriginalModel>> getOriginal(NoParams params) async {
     try {
       final response = await heartDatasource.getOriginal(params);
       return Right(response);
@@ -76,7 +88,7 @@ class HeartRepositoryImpl implements HeartRepository {
   Future<Either<Failure, HeartListModel>> getHeartItems() async {
     try {
       final response = await heartDatasource.getHeartItems();
-
+      
       return Right(HeartListModel.fromMap(response));
     } on LocalException catch (e) {
       return Left(LocalFailure(e.message));

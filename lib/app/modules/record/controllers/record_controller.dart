@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:heart_usb/app/data/datasource/model/heart_item_model.dart';
+import 'package:heart_usb/app/data/domain/usecase/delete_heart.dart';
+import 'package:heart_usb/app/data/domain/usecase/get_hearts.dart';
 import 'package:heart_usb/app/modules/resources/dimens.dart';
-import 'package:path/path.dart' as p;
+import 'package:heart_usb/core/usecase/usecase.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/failure/failure.dart';
 import '../../../data/domain/usecase/post_csv.dart';
@@ -11,19 +14,23 @@ import '../../../routes/app_pages.dart';
 
 class RecordController extends GetxController {
   final PostCsv postCsv = Get.put(PostCsv());
+  final GetHearts hearts = Get.put(GetHearts());
+  final DeleteHeart deleteHeart = Get.put(DeleteHeart());
 
   RxList<FileSystemEntity> files = RxList.empty();
+  Rxn<HeartListModel> heartList = Rxn<HeartListModel>();
 
-  void _getRecordDirectory() async {
-    List<FileSystemEntity> csvs = List.empty(growable: true);
-    String directory = (await getApplicationDocumentsDirectory()).path;
-    List<FileSystemEntity> datas = Directory(directory).listSync();
-    for (var data in datas) {
-      if (p.extension(data.path) == ".csv") {
-        csvs.add(data);
+  void _getRecordLocal() async {
+    final data = await hearts.call(NoParams());
+    data.fold((l) {
+      if (l is ServerFailure) {
+        if (kDebugMode) {
+          print(l.message);
+        }
       }
-    }
-    files(csvs);
+    }, (r) {
+      heartList(r);
+    });
   }
 
   String fileName(Uri pathName) {
@@ -42,24 +49,26 @@ class RecordController extends GetxController {
       }
     }, (r) {
       Get.back();
-      Get.toNamed(Routes.ANALYSIS, arguments: r.data);
+      Get.toNamed(Routes.ANALYSIS);
     });
   }
 
-  void deleteFile(String path) {
-    popDelete(path);
+  void deleteFile(String? path, int id) {
+    popDelete(path, id);
   }
 
-  void popDelete(String path) {
+  void popDelete(String? path, int id) {
     Get.defaultDialog(
       title: "Hapus rekaman",
       contentPadding: EdgeInsets.symmetric(horizontal: Dimens.space24),
       content: const Text("Apakah anda ingin hapus file rekaman ?"),
       confirm: ElevatedButton(
         onPressed: () {
-          final dir = Directory(path);
+          deleteHeart.call(id);
+          final dir = Directory("$path");
           dir.deleteSync(recursive: true);
-          _getRecordDirectory();
+          _getRecordLocal();
+          Get.back();
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -156,7 +165,6 @@ class RecordController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-
-    _getRecordDirectory();
+    _getRecordLocal();
   }
 }
