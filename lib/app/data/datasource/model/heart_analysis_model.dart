@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import '../../domain/entities/heart.dart';
+
+HeartAnalysisModel analisModelFromJson(String str) =>
+    HeartAnalysisModel.fromJson(json.decode(str));
+
+String analysisToJson(HeartAnalysisModel? data) => json.encode(data?.toJson());
 
 class HeartAnalysisModel {
   HeartAnalysisModel({

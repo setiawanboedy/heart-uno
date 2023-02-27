@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
-import '../../datasource/model/heart_item_model.dart';
+import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
 import '../../../../core/failure/failure.dart';
 import '../../../../core/usecase/usecase.dart';
 
 import '../../repository/heart_repository.dart';
 
-class GetHeart extends UseCase<HeartItemModel, int> {
+class GetHeartDetail extends UseCase<DetailModel, int> {
   final HeartRepository repository = Get.put(HeartRepositoryImpl());
 
   @override
-  Future<Either<Failure, HeartItemModel>> call(int params) {
-    return repository.getHeartItem(params);
+  Future<Either<Failure, DetailModel>> call(int params) {
+    return repository.getHeartDetail(params);
   }
 }

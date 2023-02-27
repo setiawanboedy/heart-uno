@@ -1,3 +1,9 @@
+
+import 'dart:convert';
+
+SpectrumModel spectrumModelFromJson(String? str) =>
+    SpectrumModel.fromJson(json.decode(str ?? ""));
+
 class SpectrumModel {
   SpectrumModel({required this.freq, required this.psd});
 

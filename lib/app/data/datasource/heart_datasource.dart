@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/datasource/local/sql_helper.dart';
-import 'package:heart_usb/app/data/datasource/model/heart_item_model.dart';
-import 'package:heart_usb/app/data/datasource/model/original_model.dart';
+import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
+import 'local/sql_helper.dart';
+import 'model/heart_item_model.dart';
+import 'model/original_model.dart';
 import '../../../core/usecase/usecase.dart';
 
 import '../../../core/error/exceptions.dart';
@@ -19,6 +20,11 @@ abstract class HeartDatasource {
   Future<List<Map<String, dynamic>>> getHeartItems();
   Future<Map<String, dynamic>> getHeartItem(int id);
   Future<void> deleteHeartItem(int id);
+
+  // detail
+  Future<int> saveHeartDetail(DetailModel analis);
+  Future<Map<String, dynamic>?> getHeartDetail(int id);
+  Future<void> deleteHeartDetail(int id);
 }
 
 class HeartDatasourceImpl implements HeartDatasource {
@@ -124,6 +130,37 @@ class HeartDatasourceImpl implements HeartDatasource {
       final response = await SQLHelper.saveHeart(params);
       return response;
     } on LocalException catch (e) {
+      throw LocalException(e.message);
+    }
+  }
+
+  @override
+  Future<int> saveHeartDetail(DetailModel analis) async {
+    try {
+      final response = await SQLHelper.saveHeartDetail(analis);
+      return response;
+    } on LocalException catch (e) {
+      throw LocalException(e.message);
+    }
+  }
+
+  @override
+  Future<void> deleteHeartDetail(int id) async {
+    try {
+      await SQLHelper.deleteHeartDetail(id);
+    } on LocalException catch (e) {
+      throw LocalException(e.message);
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>?> getHeartDetail(int id) async {
+    try {
+      final response = await SQLHelper.getHeartDetail(id);
+      
+      return response.firstWhereOrNull((element) => element.isNotEmpty);
+    } on LocalException catch (e) {
+   
       throw LocalException(e.message);
     }
   }

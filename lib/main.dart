@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'di/dependency_injection.dart';
-
 import 'app/routes/app_pages.dart';
+import 'di/dependency_injection.dart';
 
 void main() async {
   await dependencyInjection();

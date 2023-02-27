@@ -1,3 +1,10 @@
+import 'dart:convert';
+
+OriginalModel oriModelFromJson(String str) =>
+    OriginalModel.fromJson(json.decode(str));
+
+String originalDetailToJson(OriginalModel? data) => json.encode(data?.toJson());
+
 class OriginalModel {
   OriginalModel({
     required this.ecg,

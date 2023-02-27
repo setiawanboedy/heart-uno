@@ -1,5 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/domain/usecase/get_analysis.dart';
+import 'package:heart_usb/app/data/data_model.dart';
+import 'package:heart_usb/app/data/datasource/model/spectrum_model.dart';
+import 'package:heart_usb/app/data/domain/usecase/get_detail.dart';
+import 'package:heart_usb/app/data/domain/usecase/save_detail.dart';
+import 'package:heart_usb/app/modules/record/controllers/record_controller.dart';
+import '../../../data/datasource/model/detail_model.dart';
+import '../../../data/datasource/model/original_model.dart';
+import '../../../data/domain/usecase/get_analysis.dart';
 
 import '../../../../core/failure/failure.dart';
 import '../../../../core/usecase/usecase.dart';
@@ -18,12 +26,16 @@ class AnalysisController extends GetxController {
   final GetOriginal getOriginal = Get.put(GetOriginal());
   final GetSpectrum getSpectrum = Get.put(GetSpectrum());
   final GetAnalysis analysis = Get.put(GetAnalysis());
+  final SaveDetail saveDetailLocal = Get.put(SaveDetail());
+  final GetHeartDetail getDetailHeart = Get.put(GetHeartDetail());
 
-  var heartResult = Rxn<Data>();
+  final Rxn<Data> heartResult = Rxn<Data>();
+  final Rxn<HeartAnalysisModel> analysisResult = Rxn<HeartAnalysisModel>();
 
   final RxList<OriChart> oriImage = RxList.empty(growable: true);
 
-  final RxnString spectrumImage = RxnString();
+  final RxString spectrumImage = RxString("");
+  final Rxn<OriginalModel> ori = Rxn<OriginalModel>();
 
   Future<void> getOriUrlImage() async {
     final data = await getOriginal.call(NoParams());
@@ -33,6 +45,7 @@ class AnalysisController extends GetxController {
         // oriImage([]);
       },
       (r) {
+        ori(r);
         for (int i = 0; i < r.ecg.length; i++) {
           oriImage.add(OriChart(i, r.ecg[i]));
         }
@@ -61,6 +74,30 @@ class AnalysisController extends GetxController {
     }, (r) {
       heartResult(r.data);
     });
+  }
+
+  void saveDetailToLocal(int id, DetailModel detail) async {
+    final data = await saveDetailLocal.call(detail);
+    data.fold((l) {
+      if (l is ServerFailure) {
+        debugPrint("Something went wrong: ${l.message}");
+      }
+    }, (r) {
+      debugPrint("$r");
+    });
+  }
+
+  void getAnalysisFromJson(DataAnalysis data) {
+    // final origin = oriModelFromJson(data.detail!.original!);
+    // for (int i = 0; i < origin.ecg.length; i++) {
+    //   oriImage.add(OriChart(i, origin.ecg[i]));
+    // }
+
+    // final analysis = analisModelFromJson(data.detail!.analysis!);
+    // heartResult(analysis.data);
+
+    // final spectrum = data.detail?.spectrum;
+    // spectrumImage(spectrum);
   }
 
   @override

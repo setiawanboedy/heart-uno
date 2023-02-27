@@ -1,13 +1,12 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+
 import '../../../data/datasource/local/storage_manager.dart';
+import '../../../routes/app_pages.dart';
 import '../../resources/dimens.dart';
 import '../../resources/palette.dart';
 import '../../utils/strings.dart';
-import '../../../routes/app_pages.dart';
-
 import '../controllers/setting_controller.dart';
 
 class SettingView extends GetView<SettingController> {

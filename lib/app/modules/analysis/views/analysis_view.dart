@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../data/datasource/model/detail_model.dart';
+import '../../../data/datasource/model/heart_analysis_model.dart';
+import '../../../data/datasource/model/original_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
+import '../../record/controllers/record_controller.dart';
 import '../../resources/dimens.dart';
 import '../../resources/palette.dart';
 import '../../widgets/spacer_v.dart';
@@ -17,6 +21,13 @@ class AnalysisView extends GetView<AnalysisController> {
   const AnalysisView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // final data = Get.arguments as DataAnalysis;
+    // controller.getAnalysisFromJson(data);
+    // if (data.detail.spectrum == null) {
+    //   controller.getOriUrlImage();
+    //   controller.getSpecUrlImage();
+    //   controller.getAnalysis();
+    // }
     return Parent(
       appBar: AppBar(
         elevation: 0,
@@ -175,9 +186,9 @@ class AnalysisView extends GetView<AnalysisController> {
             const SpacerV(),
             CardGraph(
               image: Obx(
-                () => controller.spectrumImage.value != null
+                () => controller.spectrumImage.value.isNotEmpty
                     ? Image.memory(
-                        base64Decode(controller.spectrumImage.value!),
+                        base64Decode(controller.spectrumImage.value),
                         fit: BoxFit.cover,
                       )
                     : const Center(child: CircularProgressIndicator()),
@@ -216,7 +227,26 @@ class AnalysisView extends GetView<AnalysisController> {
                         ),
                 ),
               ),
-            )
+            ),
+            // Obx(() {
+            //   var original = originalDetailToJson(controller.ori.value);
+            //   var analysis = analysisToJson(controller.analysisResult.value);
+            //   var spectrum = controller.spectrumImage.value;
+            //   if (original.isNotEmpty &&
+            //       analysis.isNotEmpty &&
+            //       spectrum.isNotEmpty) {
+            //     var detail = DetailModel(
+            //       id: data.id,
+            //       original: original,
+            //       spectrum: spectrum,
+            //       analysis: analysis,
+            //     );
+            //     // controller.saveDetailToLocal(data.id!, detail);
+            //   }
+            //   return (controller.heartResult.value?.bpm != null)
+            //       ? const SizedBox()
+            //       : const SizedBox();
+            // }),
           ],
         ),
       ),
