@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/data_model.dart';
-import 'package:heart_usb/app/data/datasource/model/spectrum_model.dart';
 import 'package:heart_usb/app/data/domain/usecase/get_detail.dart';
 import 'package:heart_usb/app/data/domain/usecase/save_detail.dart';
-import 'package:heart_usb/app/modules/record/controllers/record_controller.dart';
 import '../../../data/datasource/model/detail_model.dart';
 import '../../../data/datasource/model/original_model.dart';
 import '../../../data/domain/usecase/get_analysis.dart';
@@ -42,7 +39,6 @@ class AnalysisController extends GetxController {
     oriImage.clear();
     data.fold(
       (l) {
-        // oriImage([]);
       },
       (r) {
         ori(r);
@@ -85,19 +81,6 @@ class AnalysisController extends GetxController {
     }, (r) {
       debugPrint("$r");
     });
-  }
-
-  void getAnalysisFromJson(DataAnalysis data) {
-    // final origin = oriModelFromJson(data.detail!.original!);
-    // for (int i = 0; i < origin.ecg.length; i++) {
-    //   oriImage.add(OriChart(i, origin.ecg[i]));
-    // }
-
-    // final analysis = analisModelFromJson(data.detail!.analysis!);
-    // heartResult(analysis.data);
-
-    // final spectrum = data.detail?.spectrum;
-    // spectrumImage(spectrum);
   }
 
   @override

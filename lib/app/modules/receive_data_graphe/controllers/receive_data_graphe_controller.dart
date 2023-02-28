@@ -148,7 +148,7 @@ class ReceiveDataGrapheController extends GetxController {
       _serialData.add(GraphModel(y: int.parse(line), x: count++));
       _serialDataSave
           .add(GraphModel(y: int.parse(line), x: count++, time: time));
-      // calcualteBPM(int.parse(line));
+   
       if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);
       }
