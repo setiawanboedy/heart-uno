@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/domain/usecase/get_detail.dart';
-import 'package:heart_usb/app/data/domain/usecase/save_detail.dart';
 import '../../../data/datasource/model/detail_model.dart';
 import '../../../data/datasource/model/original_model.dart';
 import '../../../data/domain/usecase/get_analysis.dart';
@@ -23,8 +21,6 @@ class AnalysisController extends GetxController {
   final GetOriginal getOriginal = Get.put(GetOriginal());
   final GetSpectrum getSpectrum = Get.put(GetSpectrum());
   final GetAnalysis analysis = Get.put(GetAnalysis());
-  final SaveDetail saveDetailLocal = Get.put(SaveDetail());
-  final GetHeartDetail getDetailHeart = Get.put(GetHeartDetail());
 
   final Rxn<Data> heartResult = Rxn<Data>();
   final Rxn<HeartAnalysisModel> analysisResult = Rxn<HeartAnalysisModel>();
@@ -72,16 +68,7 @@ class AnalysisController extends GetxController {
     });
   }
 
-  void saveDetailToLocal(int id, DetailModel detail) async {
-    final data = await saveDetailLocal.call(detail);
-    data.fold((l) {
-      if (l is ServerFailure) {
-        debugPrint("Something went wrong: ${l.message}");
-      }
-    }, (r) {
-      debugPrint("$r");
-    });
-  }
+ 
 
   @override
   void onInit() {

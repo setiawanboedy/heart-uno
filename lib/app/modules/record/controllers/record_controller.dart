@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
-import 'package:heart_usb/app/data/domain/usecase/get_detail.dart';
 import '../../../data/datasource/model/heart_item_model.dart';
 import '../../../data/domain/usecase/delete_heart.dart';
 import '../../../data/domain/usecase/get_hearts.dart';
@@ -25,7 +24,6 @@ class RecordController extends GetxController {
   final PostCsv postCsv = Get.put(PostCsv());
   final GetHearts hearts = Get.put(GetHearts());
   final DeleteHeart deleteHeart = Get.put(DeleteHeart());
-  final GetHeartDetail getDetail = Get.put(GetHeartDetail());
 
   RxList<FileSystemEntity> files = RxList.empty();
   Rxn<HeartListModel> heartList = Rxn<HeartListModel>();
@@ -63,21 +61,8 @@ class RecordController extends GetxController {
   }
 
   void getDetailHeart(int id, HeartItemModel file) async {
-    // final data = await getDetail.call(id);
-
-    // data.fold((l) {
-    //   if (l is LocalFailure) {
-    //     debugPrint("${l.message}");
-    //   }
-    // }, (r) {
-    //   if (r.spectrum!.isNotEmpty) {
-        // print(r.spectrum);
-        // Get.toNamed(Routes.ANALYSIS);
-      // } else {
         File fileCsv = File(file.path!);
         postUploadCsv(HeartParams(fileCsv), file.id!);
-      // }
-    // });
   }
 
   void popDelete(String? path, int id) {
