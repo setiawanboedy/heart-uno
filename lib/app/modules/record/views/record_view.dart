@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 import '../../../data/datasource/model/heart_item_model.dart';
 import '../../resources/dimens.dart';
 
@@ -14,7 +15,7 @@ class RecordView extends GetView<RecordController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hasil Rekaman'),
+        title: const Text(Strings.record_result_title),
         centerTitle: true,
         backgroundColor: Palette.bgColor,
         leading: IconButton(
@@ -60,14 +61,21 @@ class RecordView extends GetView<RecordController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${file?.name}",
+                      "${Strings.name_record} : ${file?.name}",
                       style: TextStyle(fontSize: Dimens.body1),
                     ),
                     SizedBox(
                       height: Dimens.space8,
                     ),
                     Text(
-                      "${file?.desc}, umur: ${file?.age}",
+                      "${Strings.desc_record} : ${file?.desc}, umur: ${file?.age}",
+                      style: TextStyle(fontSize: Dimens.body1),
+                    ),
+                    SizedBox(
+                      height: Dimens.space8,
+                    ),
+                    Text(
+                      "${Strings.age} : ${file?.age} years old",
                       style: TextStyle(fontSize: Dimens.body1),
                     ),
                   ],

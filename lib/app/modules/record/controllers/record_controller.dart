@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 import '../../../data/datasource/model/heart_item_model.dart';
 import '../../../data/domain/usecase/delete_heart.dart';
 import '../../../data/domain/usecase/get_hearts.dart';
@@ -67,9 +68,9 @@ class RecordController extends GetxController {
 
   void popDelete(String? path, int id) {
     Get.defaultDialog(
-      title: "Hapus rekaman",
+      title: Strings.delete_record,
       contentPadding: EdgeInsets.symmetric(horizontal: Dimens.space24),
-      content: const Text("Apakah anda ingin hapus file rekaman ?"),
+      content: const Text(Strings.do_delete_title),
       confirm: ElevatedButton(
         onPressed: () {
           deleteHeart.call(id);
@@ -83,7 +84,7 @@ class RecordController extends GetxController {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: const Text("Ya"),
+        child: const Text(Strings.yes),
       ),
       cancel: OutlinedButton(
         onPressed: () {
@@ -94,7 +95,7 @@ class RecordController extends GetxController {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: const Text("Tidak"),
+        child: const Text(Strings.no),
       ),
     );
   }
@@ -159,7 +160,7 @@ class RecordController extends GetxController {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
-                    child: const Text("Kembali"),
+                    child: const Text(Strings.back),
                   )
                 ],
               )),

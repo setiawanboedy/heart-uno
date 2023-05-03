@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import '../../../data/datasource/model/detail_model.dart';
 import '../../../data/datasource/model/original_model.dart';
 import '../../../data/domain/usecase/get_analysis.dart';
 

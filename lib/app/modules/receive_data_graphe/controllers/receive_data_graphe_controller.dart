@@ -252,13 +252,13 @@ class ReceiveDataGrapheController extends GetxController {
             startTimer();
             Get.back();
           },
-          child: const Text("Simpan")),
+          child: const Text(Strings.save)),
       cancel: ElevatedButton(
         style: ElevatedButton.styleFrom(elevation: 0),
         onPressed: () {
           Get.back();
         },
-        child: const Text("Tidak"),
+        child: const Text(Strings.dont_save),
       ),
     );
   }

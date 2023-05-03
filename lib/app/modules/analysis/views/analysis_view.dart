@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../routes/app_pages.dart';
@@ -22,7 +23,7 @@ class AnalysisView extends GetView<AnalysisController> {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Palette.bgColor,
-        title: const Text("Analysis Sinyal Jantung"),
+        title: const Text(Strings.heart_analysis_title),
         leading: IconButton(
             onPressed: () {
               Get.offNamed(Routes.RECORD);
@@ -40,7 +41,7 @@ class AnalysisView extends GetView<AnalysisController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
-                "Sinyal jantung",
+                Strings.heart_signal,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: Dimens.body1,

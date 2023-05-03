@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../data/graph_model.dart';
@@ -21,7 +22,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Grafik Detak Jantung'),
+        title: const Text(Strings.heart_graph_title),
         backgroundColor: Palette.bgColor,
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -93,7 +94,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
                           return buildDialog(hourC, minuteC);
                         }));
                   },
-                  textButton: const Text("Atur Waktu"),
+                  textButton: const Text(Strings.set_timer),
                 ),
               ),
           ],
@@ -105,7 +106,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
   Widget buildDialog(
           TextEditingController hourC, TextEditingController minuteC) =>
       AlertDialog(
-        title: const Text('Waktu rekam'),
+        title: const Text(Strings.time_record),
         content: Row(
           children: [
             SizedBox(
@@ -120,7 +121,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
             const SizedBox(
               width: 8,
             ),
-            const Text("Jam"),
+            const Text(Strings.hour),
             const SizedBox(
               width: 16,
             ),
@@ -136,7 +137,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
             const SizedBox(
               width: 8,
             ),
-            const Text("Menit")
+            const Text(Strings.minutes)
           ],
         ),
         actions: [
@@ -147,7 +148,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
             onPressed: () {
               Get.back();
             }, // function used to perform after pressing the button
-            child: const Text('BATAL'),
+            child: const Text(Strings.cancel),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -157,7 +158,7 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
               controller.setTimerRecord(hourC.text, minuteC.text);
               Get.back();
             },
-            child: const Text('REKAM'),
+            child: const Text(Strings.record),
           ),
         ],
       );

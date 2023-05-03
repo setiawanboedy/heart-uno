@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:heart_usb/app/modules/utils/strings.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../pages/parent.dart';
@@ -74,7 +75,7 @@ class HomeView extends GetView<HomeController> {
                         },
                         child: Container(
                           padding: EdgeInsets.all(Dimens.button),
-                          child: const Text("Lihat grafik"),
+                          child: const Text(Strings.view_graph),
                         ),
                       ),
                     ],
@@ -99,7 +100,7 @@ class HomeView extends GetView<HomeController> {
                         },
                         child: Container(
                           padding: EdgeInsets.all(Dimens.button),
-                          child: const Text("Lihat grafik"),
+                          child: const Text(Strings.view_graph),
                         ),
                       ),
                     ],
