@@ -3,13 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
 import 'package:heart_usb/app/modules/utils/strings.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../../data/datasource/model/heart_item_model.dart';
 import '../../../data/domain/usecase/delete_heart.dart';
 import '../../../data/domain/usecase/get_hearts.dart';
 import '../../resources/dimens.dart';
 import '../../../../core/usecase/usecase.dart';
 import 'package:get/get.dart';
-
+import 'package:path/path.dart' as p;
 import '../../../../core/failure/failure.dart';
 import '../../../data/domain/usecase/post_csv.dart';
 import '../../../routes/app_pages.dart';
@@ -61,9 +62,26 @@ class RecordController extends GetxController {
     popDelete(path, id);
   }
 
+  void _getRecordDirectory() async {
+    List<FileSystemEntity> csvs = List.empty(growable: true);
+    String directory = (await getApplicationDocumentsDirectory()).path;
+    List<FileSystemEntity> datas = Directory(directory).listSync();
+    for (var data in datas) {
+      if (p.extension(data.path) == ".csv") {
+        csvs.add(data);
+        print(data.path);
+      }
+    }
+    // print(object)
+  }
+
   void getDetailHeart(int id, HeartItemModel file) async {
-        File fileCsv = File(file.path!);
-        postUploadCsv(HeartParams(fileCsv), file.id!);
+    File fileCsv = File(
+        file.path!);
+    // print(fileCsv.path);
+    // print(file.path);
+    postUploadCsv(HeartParams(fileCsv), file.id!);
+    // _getRecordDirectory();
   }
 
   void popDelete(String? path, int id) {

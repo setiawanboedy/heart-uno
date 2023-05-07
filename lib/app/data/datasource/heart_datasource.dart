@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
 import 'local/sql_helper.dart';
 import 'model/heart_item_model.dart';
 import 'model/original_model.dart';

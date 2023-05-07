@@ -137,19 +137,19 @@ class AnalysisView extends GetView<AnalysisController> {
                           children: [
                             CardAnalysis(
                               value: controller.heartResult.value?.ibi,
-                              title: "IBI",
+                              title: "IBI (ms)",
                             ),
                             CardAnalysis(
                               value: controller.heartResult.value?.rmssd,
-                              title: "RMSSD",
+                              title: "RMSSD (ms)",
                             ),
                             CardAnalysis(
                               value: controller.heartResult.value?.sdnn,
-                              title: "SDNN",
+                              title: "SDNN (ms)",
                             ),
                             CardAnalysis(
                               value: controller.heartResult.value?.sdsd,
-                              title: "SDSD",
+                              title: "SDSD (ms)",
                             ),
                           ],
                         )
@@ -204,11 +204,11 @@ class AnalysisView extends GetView<AnalysisController> {
                           children: [
                             CardAnalysis(
                               value: controller.heartResult.value?.hf,
-                              title: "HF",
+                              title: "HF (ms^2)",
                             ),
                             CardAnalysis(
                               value: controller.heartResult.value?.lf,
-                              title: "LF",
+                              title: "LF (ms^2)",
                             ),
                           ],
                         )

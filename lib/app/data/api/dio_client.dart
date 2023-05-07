@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'dio_interceptor.dart';
 
 class DioClient {
-  String baseUrl = "https://new-uno.onrender.com";
+  String baseUrl = "https://heart-uno.onrender.com";
 
   late Dio _dio;
   bool _isUnitTest = false;
@@ -24,8 +24,8 @@ class DioClient {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
             },
-            receiveTimeout: 60000,
-            connectTimeout: 60000,
+            receiveTimeout: 600000,
+            connectTimeout: 600000,
             validateStatus: (int? status) {
               return status! > 0;
             }),
