@@ -10,13 +10,13 @@ class OriginalModel {
     required this.ecg,
   });
 
-  List<double> ecg;
+  List<int> ecg;
 
   factory OriginalModel.fromJson(Map<String, dynamic> json) => OriginalModel(
-        ecg: List<double>.from(json["ecg"].map((x) => x)),
+        ecg: List<int>.from(json["ecg"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "ecg": List<double>.from(ecg.map((x) => x)),
+        "ecg": List<int>.from(ecg.map((x) => x)),
       };
 }

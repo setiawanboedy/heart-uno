@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CardAnalysis extends StatelessWidget {
-  final double? value;
+  final String? value;
   final String? title;
   const CardAnalysis({
     Key? key,
@@ -24,7 +24,7 @@ class CardAnalysis extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            Text("${value?.toStringAsFixed(3)}")
+            Text("$value")
           ],
         ),
       ),

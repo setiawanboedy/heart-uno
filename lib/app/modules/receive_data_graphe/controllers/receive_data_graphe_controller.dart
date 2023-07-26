@@ -144,9 +144,10 @@ class ReceiveDataGrapheController extends GetxController {
       _port.value?.inputStream as Stream<Uint8List>,
       Uint8List.fromList([13, 10]),
     ).stream.listen((String line) {
-      _serialData.add(GraphModel(y: int.parse(line), x: DateTime.now().millisecond));
+      final time = DateTime.now();
+      _serialData.add(GraphModel(y: int.parse(line), x: count++));
       _serialDataSave
-          .add(GraphModel(y: int.parse(line), x: DateTime.now().millisecond));
+          .add(GraphModel(y: int.parse(line), x: count++, time: time));
    
       if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);
@@ -187,10 +188,10 @@ class ReceiveDataGrapheController extends GetxController {
 
   Future<void> generateCsv() async {
     List<List<dynamic>> data = [
-      ["hart"],
+      ["hart", "time"],
     ];
     for (var lis in serialDataSave) {
-      data.add([lis.y]);
+      data.add([lis.y,lis.time]);
     }
     String csvData = const ListToCsvConverter().convert(data);
     final String directory = (await getApplicationDocumentsDirectory()).path;

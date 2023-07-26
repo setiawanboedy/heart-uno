@@ -9,15 +9,12 @@ class CardGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Card(
-        child: Container(
-          height: Get.size.height * 0.35,
-          width: Get.size.width,
-          color: Colors.white,
-          child: image,
-        ),
+    return Card(
+      child: Container(
+        height: Get.size.height * 0.3,
+        width: Get.size.width,
+        color: Colors.white,
+        child: image,
       ),
     );
   }
