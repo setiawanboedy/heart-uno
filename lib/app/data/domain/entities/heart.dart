@@ -1,12 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-import '../../datasource/model/heart_analysis_model.dart';
-
 class Heart extends Equatable {
-  final Data? data;
+  final double? ibi;
+  final double? bpm;
+  final double? sdnn;
+  final double? rmssd;
 
-  const Heart(this.data);
+  const Heart({this.ibi, this.bpm, this.sdnn, this.rmssd});
   
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [ibi, bpm, sdnn, rmssd];
 }

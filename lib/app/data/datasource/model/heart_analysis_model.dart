@@ -1,40 +1,20 @@
 import 'dart:convert';
 
-import '../../domain/entities/heart.dart';
+import 'package:heart_usb/app/data/domain/entities/heart.dart';
+
 
 HeartAnalysisModel analisModelFromJson(String str) =>
     HeartAnalysisModel.fromJson(json.decode(str));
 
 String analysisToJson(HeartAnalysisModel? data) => json.encode(data?.toJson());
 
+
 class HeartAnalysisModel {
   HeartAnalysisModel({
-    this.data,
-  });
-
-  Data? data;
-
-  factory HeartAnalysisModel.fromJson(Map<String, dynamic> json) =>
-      HeartAnalysisModel(
-        data: Data.fromJson(json["data"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "data": data?.toJson(),
-      };
-
-  Heart toEntity() => Heart(data);
-}
-
-class Data {
-  Data({
     this.ibi,
     this.sdnn,
-    this.sdsd,
     this.rmssd,
     this.bpm,
-    this.lf,
-    this.hf,
   });
 
   double? ibi;
@@ -45,23 +25,26 @@ class Data {
   double? lf;
   double? hf;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+Heart toEntity() {
+    return Heart(
+      ibi: ibi,
+      sdnn: sdnn,
+      rmssd: rmssd,
+      bpm: bpm,
+    );
+  }
+
+  factory HeartAnalysisModel.fromJson(Map<String, dynamic> json) => HeartAnalysisModel(
         ibi: json["ibi"].toDouble(),
         sdnn: json["sdnn"].toDouble(),
-        sdsd: json["sdsd"].toDouble(),
         rmssd: json["rmssd"].toDouble(),
         bpm: json["bpm"].toDouble(),
-        lf: json["lf"].toDouble(),
-        hf: json["hf"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
         "ibi": ibi,
         "sdnn": sdnn,
-        "sdsd": sdsd,
         "rmssd": rmssd,
-        "bpm": bpm,
-        "lf": lf,
-        "hf": hf,
+        "bpm": bpm
       };
 }

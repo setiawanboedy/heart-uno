@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -100,25 +101,7 @@ class AnalysisView extends GetView<AnalysisController> {
                 ),
               ),
             ),
-            const SpacerV(),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-              ),
-              child: SizedBox(
-                height: 85,
-                child: Obx(
-                  () => controller.heartResult.value != null
-                      ? CardAnalysis(
-                          value: controller.heartResult.value?.bpm,
-                          title: "BPM",
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                ),
-              ),
-            ),
+            
             const SpacerV(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -136,6 +119,10 @@ class AnalysisView extends GetView<AnalysisController> {
                           mainAxisSpacing: 10,
                           children: [
                             CardAnalysis(
+                              value: controller.heartResult.value?.bpm,
+                              title: "SDSD (ms)",
+                            ),
+                            CardAnalysis(
                               value: controller.heartResult.value?.ibi,
                               title: "IBI (ms)",
                             ),
@@ -147,10 +134,7 @@ class AnalysisView extends GetView<AnalysisController> {
                               value: controller.heartResult.value?.sdnn,
                               title: "SDNN (ms)",
                             ),
-                            CardAnalysis(
-                              value: controller.heartResult.value?.sdsd,
-                              title: "SDSD (ms)",
-                            ),
+                            
                           ],
                         )
                       : const Center(
@@ -176,9 +160,9 @@ class AnalysisView extends GetView<AnalysisController> {
             const SpacerV(),
             CardGraph(
               image: Obx(
-                () => controller.spectrumImage.value.isNotEmpty
-                    ? Image.memory(
-                        base64Decode(controller.spectrumImage.value),
+                () => controller.spectrumImage.value != null
+                    ? Image.network(
+                        "${controller.spectrumImage.value?.image}",
                         fit: BoxFit.cover,
                       )
                     : const Center(child: CircularProgressIndicator()),
@@ -187,37 +171,37 @@ class AnalysisView extends GetView<AnalysisController> {
             SpacerV(
               value: Dimens.space16,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Obx(
-                () => SizedBox(
-                  width: Get.size.width,
-                  height: Get.size.height * 0.2,
-                  child: (controller.heartResult.value?.bpm != null)
-                      ? GridView.count(
-                          shrinkWrap: false,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisCount: 2,
-                          childAspectRatio: 3 / 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          children: [
-                            CardAnalysis(
-                              value: controller.heartResult.value?.hf,
-                              title: "HF (ms^2)",
-                            ),
-                            CardAnalysis(
-                              value: controller.heartResult.value?.lf,
-                              title: "LF (ms^2)",
-                            ),
-                          ],
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            //   child: Obx(
+            //     () => SizedBox(
+            //       width: Get.size.width,
+            //       height: Get.size.height * 0.2,
+            //       child: (controller.heartResult.value?.bpm != null)
+            //           ? GridView.count(
+            //               shrinkWrap: false,
+            //               physics: const NeverScrollableScrollPhysics(),
+            //               crossAxisCount: 2,
+            //               childAspectRatio: 3 / 2,
+            //               crossAxisSpacing: 10,
+            //               mainAxisSpacing: 10,
+            //               children: [
+            //                 CardAnalysis(
+            //                   value: controller.heartResult.value?.hf,
+            //                   title: "HF (ms^2)",
+            //                 ),
+            //                 CardAnalysis(
+            //                   value: controller.heartResult.value?.lf,
+            //                   title: "LF (ms^2)",
+            //                 ),
+            //               ],
+            //             )
+            //           : const Center(
+            //               child: CircularProgressIndicator(),
+            //             ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

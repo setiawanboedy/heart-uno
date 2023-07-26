@@ -1,5 +1,6 @@
-
 import 'package:get/get.dart';
+import 'package:heart_usb/app/data/domain/entities/heart.dart';
+import 'package:heart_usb/app/data/domain/entities/image_entity.dart';
 import '../../../data/datasource/model/original_model.dart';
 import '../../../data/domain/usecase/get_analysis.dart';
 
@@ -21,20 +22,19 @@ class AnalysisController extends GetxController {
   final GetSpectrum getSpectrum = Get.put(GetSpectrum());
   final GetAnalysis analysis = Get.put(GetAnalysis());
 
-  final Rxn<Data> heartResult = Rxn<Data>();
+  final Rxn<Heart> heartResult = Rxn<Heart>();
   final Rxn<HeartAnalysisModel> analysisResult = Rxn<HeartAnalysisModel>();
 
   final RxList<OriChart> oriImage = RxList.empty(growable: true);
 
-  final RxString spectrumImage = RxString("");
+  final Rxn<ImageEntity> spectrumImage = Rxn<ImageEntity>();
   final Rxn<OriginalModel> ori = Rxn<OriginalModel>();
 
   Future<void> getOriUrlImage() async {
     final data = await getOriginal.call(NoParams());
     oriImage.clear();
     data.fold(
-      (l) {
-      },
+      (l) {},
       (r) {
         ori(r);
         for (int i = 0; i < r.ecg.length; i++) {
@@ -49,7 +49,7 @@ class AnalysisController extends GetxController {
 
     data.fold(
       (l) {
-        spectrumImage(l.toString());
+        printError();
       },
       (r) {
         spectrumImage(r);
@@ -63,11 +63,9 @@ class AnalysisController extends GetxController {
     data.fold((l) {
       if (l is ServerFailure) {}
     }, (r) {
-      heartResult(r.data);
+      heartResult(r);
     });
   }
-
- 
 
   @override
   void onInit() {

@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'local/sql_helper.dart';
+import 'model/frequency_model.dart';
 import 'model/heart_item_model.dart';
+import 'model/image_model.dart';
 import 'model/original_model.dart';
 import '../../../core/usecase/usecase.dart';
 
@@ -13,8 +15,11 @@ import 'model/heart_analysis_model.dart';
 abstract class HeartDatasource {
   Future<String> uploadCSV(HeartParams params);
   Future<HeartAnalysisModel> getAnalysis(NoParams params);
+  Future<FrequencyModel> getFrequecy(NoParams params);
   Future<OriginalModel> getOriginal(NoParams params);
-  Future<String> getSpectrum(NoParams params);
+  Future<ImageModel> getSpectrum(NoParams params);
+  Future<ImageModel> getDeteksi(NoParams params);
+  Future<ImageModel> getKoreksi(NoParams params);
   Future<int> saveHeartItem(HeartItemModel params);
   Future<List<Map<String, dynamic>>> getHeartItems();
   Future<Map<String, dynamic>> getHeartItem(int id);
@@ -60,12 +65,12 @@ class HeartDatasourceImpl implements HeartDatasource {
   }
 
   @override
-  Future<String> getSpectrum(NoParams params) async {
+  Future<ImageModel> getSpectrum(NoParams params) async {
     try {
       final response = await _client.getRequest(ListApi.spectrumImage);
       final result = response.data;
       if (response.statusCode == 200) {
-        return result;
+        return ImageModel.fromJson(result);
       } else {
         throw ServerException(result.toString());
       }
@@ -77,7 +82,7 @@ class HeartDatasourceImpl implements HeartDatasource {
   @override
   Future<HeartAnalysisModel> getAnalysis(NoParams params) async {
     try {
-      final response = await _client.getRequest(ListApi.data);
+      final response = await _client.getRequest(ListApi.timedomain);
 
       if (response.statusCode == 200) {
         final result = HeartAnalysisModel.fromJson(response.data);
@@ -126,6 +131,52 @@ class HeartDatasourceImpl implements HeartDatasource {
       return response;
     } on LocalException catch (e) {
       throw LocalException(e.message);
+    }
+  }
+  
+  @override
+  Future<ImageModel> getDeteksi(NoParams params) async {
+    try {
+      final response = await _client.getRequest(ListApi.deteksiR);
+      final result = response.data;
+      if (response.statusCode == 200) {
+        return ImageModel.fromJson(result);
+      } else {
+        throw ServerException(result.toString());
+      }
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    }
+  }
+  
+  @override
+  Future<FrequencyModel> getFrequecy(NoParams params) async {
+    try {
+      final response = await _client.getRequest(ListApi.frequencydomain);
+
+      if (response.statusCode == 200) {
+        final result = FrequencyModel.fromJson(response.data);
+        return result;
+      } else {
+        throw ServerException(response.statusMessage);
+      }
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
+    }
+  }
+  
+  @override
+  Future<ImageModel> getKoreksi(NoParams params) async {
+   try {
+      final response = await _client.getRequest(ListApi.koreksiR);
+      final result = response.data;
+      if (response.statusCode == 200) {
+        return ImageModel.fromJson(result);
+      } else {
+        throw ServerException(result.toString());
+      }
+    } on ServerException catch (e) {
+      throw ServerException(e.message);
     }
   }
 }

@@ -7,10 +7,10 @@ import '../../../../core/usecase/usecase.dart';
 import '../../repository/heart_repository.dart';
 
 
-class GetSpectrum extends UseCase<ImageEntity, NoParams> {
+class GetKoreksi extends UseCase<ImageEntity, NoParams> {
   final HeartRepository repository = Get.put(HeartRepositoryImpl());
   @override
   Future<Either<Failure, ImageEntity>> call(NoParams params) {
-    return repository.getSpectrum(params);
+    return repository.getKoreksi(params);
   }
 }
