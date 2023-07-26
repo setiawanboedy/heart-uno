@@ -144,9 +144,9 @@ class ReceiveDataGrapheController extends GetxController {
       _port.value?.inputStream as Stream<Uint8List>,
       Uint8List.fromList([13, 10]),
     ).stream.listen((String line) {
-      _serialData.add(GraphModel(y: int.parse(line), x: count++));
+      _serialData.add(GraphModel(y: int.parse(line), x: DateTime.now().millisecond));
       _serialDataSave
-          .add(GraphModel(y: int.parse(line), x: count++));
+          .add(GraphModel(y: int.parse(line), x: DateTime.now().millisecond));
    
       if (_serialData.length > Constants.lenghtData) {
         _serialData.removeAt(0);

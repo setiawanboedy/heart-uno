@@ -195,3 +195,4 @@ class RecordController extends GetxController {
     _getRecordLocal();
   }
 }
+

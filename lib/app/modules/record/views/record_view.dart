@@ -68,7 +68,7 @@ class RecordView extends GetView<RecordController> {
                       height: Dimens.space8,
                     ),
                     Text(
-                      "${Strings.desc_record} : ${file?.desc}, umur: ${file?.age}",
+                      "${Strings.desc_record} : ${file?.desc}, age: ${file?.age}",
                       style: TextStyle(fontSize: Dimens.body1),
                     ),
                     SizedBox(

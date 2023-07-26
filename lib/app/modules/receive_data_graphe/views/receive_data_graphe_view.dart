@@ -45,7 +45,6 @@ class ReceiveDataGrapheView extends GetView<ReceiveDataGrapheController> {
               child: Obx(
                 () {
                   return SfCartesianChart(
-                    title: ChartTitle(text: "${controller.bpm.value} BPM"),
                     plotAreaBorderWidth: 0,
                     plotAreaBorderColor: Colors.red,
                     primaryXAxis: NumericAxis(

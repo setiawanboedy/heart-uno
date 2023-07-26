@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'dio_interceptor.dart';
 
 class DioClient {
-  String baseUrl = "https://heart-uno.onrender.com";
+  String baseUrl = "http://34.101.125.197";
 
   late Dio _dio;
   bool _isUnitTest = false;
