@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:heart_usb/app/data/datasource/model/detail_model.dart';
 import '../model/heart_item_model.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 

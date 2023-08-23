@@ -5,7 +5,8 @@ import 'package:dio/dio.dart';
 import 'dio_interceptor.dart';
 
 class DioClient {
-  String baseUrl = "http://34.101.189.241";
+  // String baseUrl = "http://34.101.189.241";
+  String baseUrl = "http://localhost:5000";
 
   late Dio _dio;
   bool _isUnitTest = false;
